@@ -2,26 +2,82 @@
 <html>
 	<head>
 		<title>Economic Data Engine</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link type = "text/css" rel = "stylesheet" href = "stylesheet.css"/>
 	</head>
 	<body>
 		<h1>Economic Data Engine</h1>
-		<p>Welcome to EDE! The economy is the engine of human prosperity.</p>
-
-		<button>Compare Series</button>
-		<button>Add Series</button>
-
-		<div class="dropdown">
-		  <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-		  <div id="myDropdown" class="dropdown-content">
-		    <a href="#">Link 1</a>
-		    <a href="#">Link 2</a>
-		    <a href="#">Link 3</a>
-		  </div>
+		<div class = "intro">
+			<p>Welcome to the Economic Data Engine, or EDE for short!</p>
+			<p>The economy is the engine of human prosperity. Therefore, it is crucial that all people have a decent understanding of the economy at the very least. This application utilizes data from the United States (U.S.) census to identify and predict factors relating to economic growth within communities in the U.S.</p>
 		</div>
-		
-		<button>Remove Series</button>
 
+		<button class = "compare">Compare Series</button>
+		<button class = "add">Add Series</button>
+
+		<br>
+
+		<div class="dropdown" id = "correlation">
+		    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Correlation
+		    <span class="caret"></span></button>
+
+		    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">R Squared</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Linear</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Quadratic</a></li>
+		    </ul>
+ 		</div>
+
+ 		<div class="dropdown">
+		    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Data Series
+		    <span class="caret"></span></button>
+
+		    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Income</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Industry</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Primary Language</a></li>
+		    </ul>
+ 		</div>
+
+ 		 <div class="dropdown">
+		    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Data Series
+		    <span class="caret"></span></button>
+
+		    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Income</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Industry</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Primary Language</a></li>
+		    </ul>
+ 		</div>
+
+ 		<div class="dropdown">
+		    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Area Type
+		    <span class="caret"></span></button>
+
+		    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">State</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">City</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Metro Area</a></li>
+		    </ul>
+ 		</div>
+
+ 		<div class="dropdown">
+		    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Area
+		    <span class="caret"></span></button>
+
+		    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Miami</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Gainesville</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Jacksonville</a></li>
+		    </ul>
+ 		</div>
+		
+		<br>
+
+		<button class = "remove">Remove Series</button>
+
+ 		 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+ 		 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script type = "text/javascript" src = "script.js"></script>
 	</body>
 </html>
