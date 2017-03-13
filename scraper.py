@@ -1,5 +1,6 @@
-import urllib2
-from bs4 import BeautifulSoup
+import urllib2 #for web scraping
+from bs4 import BeautifulSoup 
+from xlwt import * #for python -> excel
 
 def makesoup(url):
 	req = urllib2.Request(url)
@@ -7,17 +8,27 @@ def makesoup(url):
 	soupdata = BeautifulSoup(page, "html.parser")
 	return soupdata
 
-# soup = makesoup("http://www.usboundary.com/Areas/Public%20Use%20Microdata%20Area/Florida")
+w = Workbook()
+ws = w.add_sheet('Florida')
+rowcount = 0
+colcount = 0
 
-# for ulitem in soup.find_all('ul', {'class':'areas'}):
-# 	for liitem in ulitem.find_all('li'):
-# 		print(liitem.text)
+for num in range(1, 4):
+	soup1 = makesoup("http://www.usboundary.com/Areas/Public%20Use%20Microdata%20Area/Florida/" + str(num))
+#soup1 = makesoup("http://www.usboundary.com/Areas/Public%20Use%20Microdata%20Area/Washington")
+	for ulitem in soup1.find_all('ul', {'class':'areas'}):
+		for a in ulitem.find_all('a'):
+			if(a.text == "Miami-Dade (South/Outside Urban Development Boundary) & Monroe Counties PUMA"):
+				i = 0
+			else: 
+				link = a['href']
+				soup2 = makesoup("http://www.usboundary.com/Areas/Public%20Use%20Microdata%20Area/Florida/" + link[42:]) #link is 33 + number of characters of state
+				communityID = soup2.find_all('td')[1]
+				name = soup2.find_all('td')[3]
 
-soup = makesoup("http://www.usboundary.com/Areas/Public%20Use%20Microdata%20Area/Florida/Alachua%20County%20%28Central%29--Gainesville%20City%20%28Central%29%20PUMA/192542")
+				print(communityID.text + " " + name.text)
+				ws.write(rowcount, colcount, communityID.text)
+				ws.write(rowcount, colcount + 1, name.text)
+				rowcount = rowcount + 1
 
-communityID = soup.find_all('td')[1]
-name = soup.find_all('td')[3]
-belongsTo = soup.find_all('td')[5]
-
-result = [communityID.text, name.text, belongsTo.text]
-print(result)
+w.save('florida.xls')
