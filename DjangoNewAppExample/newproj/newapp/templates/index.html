@@ -1,0 +1,26 @@
+<html>
+ <head>
+  <title>World</title>
+  </head>
+<body bgcolor="#ffffff">
+              
+
+
+<h1>Office Locations</h1>
+<table border="1">
+ <tr>
+   <th>Name</th>
+   <th>GDP</th>
+ </tr>
+ {% for c in world %}
+ <tr>
+   <td>{{c.name}}</td>
+   <td>{{c.gdp}}</td>
+ </tr>
+ {% endfor %}
+</table>
+              
+
+
+</body>
+</html>
