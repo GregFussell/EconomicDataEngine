@@ -18,7 +18,7 @@
 		<br>
 
 		<div class="dropdown" id = "correlation">
-		    <button class="btn btn-default dropdown-toggle" type="button" id="corr" data-toggle="dropdown">Correlation
+		    <button class="btn btn-default dropdown-toggle" type="button" id="correlationbutton" data-toggle="dropdown">Correlation
 		    <span class="caret"></span></button>
 
 		    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
@@ -28,8 +28,8 @@
 		    </ul>
  		</div>
 
- 		<div class="dropdown">
-		    <button class="btn btn-default dropdown-toggle" type="button" id="dataseries1" data-toggle="dropdown">Data Series
+ 		<div class="dropdown" id = "dataseries1">
+		    <button class="btn btn-default dropdown-toggle" type="button" id="dataseries1button" data-toggle="dropdown">Data Series
 		    <span class="caret"></span></button>
 
 		    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
@@ -39,8 +39,8 @@
 		    </ul>
  		</div>
 
- 		 <div class="dropdown">
-		    <button class="btn btn-default dropdown-toggle" type="button" id="dataseries2" data-toggle="dropdown">Data Series
+ 		 <div class="dropdown" id = "dataseries2">
+		    <button class="btn btn-default dropdown-toggle" type="button" id="dataseries2button" data-toggle="dropdown">Data Series
 		    <span class="caret"></span></button>
 
 		    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
@@ -50,8 +50,8 @@
 		    </ul>
  		</div>
 
- 		<div class="dropdown">
-		    <button class="btn btn-default dropdown-toggle" type="button" id="areatype" data-toggle="dropdown">Area Type
+ 		<div class="dropdown" id = "areatype">
+		    <button class="btn btn-default dropdown-toggle" type="button" id="areatypebutton" data-toggle="dropdown">Area Type
 		    <span class="caret"></span></button>
 
 		    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
@@ -61,8 +61,8 @@
 		    </ul>
  		</div>
 
- 		<div class="dropdown">
-		    <button class="btn btn-default dropdown-toggle" type="button" id="area" data-toggle="dropdown">Area
+ 		<div class="dropdown" id = "area">
+		    <button class="btn btn-default dropdown-toggle" type="button" id="areabutton" data-toggle="dropdown">Area
 		    <span class="caret"></span></button>
 
 		    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
@@ -75,6 +75,21 @@
 		<br>
 
 		<button class = "remove">Remove Series</button>
+
+		<span id = "table">
+			<table>
+				<tr>
+					<th>Name 1</th>
+					<th>Name 2</th>
+					<th>Name 3</th>
+				</tr>
+				<tr id = "addrow">
+					<td id = "#attr1">Attribute 1</td>
+					<td id = "#attr2">Attribute 2</td>
+					<td id = "#attr3">Attribute 3</td>
+				</tr>
+			</table>
+		</span>	
 
  		 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
  		 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

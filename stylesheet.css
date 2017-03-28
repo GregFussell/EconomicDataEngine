@@ -11,7 +11,7 @@ h1 {
     text-align: center;
 }
 
-/*BUTTONS*/
+/*----------BUTTONS----------*/
 .compare {
     margin-left: 125px;
     width: 220px;
@@ -45,6 +45,15 @@ h1 {
 
 .dropdown {
     display: inline-block;
+}
+
+#table {
+    display: inline-block;
+}
+
+table, th, td {
+    border: 1px solid black;
+    padding: 10px;
 }
 
 
