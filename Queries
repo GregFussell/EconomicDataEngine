@@ -1,0 +1,15 @@
+SQL Queries based on Questions:
+
+1. fertility rates
+x= area name
+IF COMMUNITY:
+  select name, (sum(numberOfChildren)/(population/2))
+  from communities, household
+  where communities.name = x and household.isWithin = (select communityID from communities
+    where communities.name = x);
+IF STATE:
+  select name, (sum(numberOfChildren)/(population/2))
+  from state, household
+  where state.name = x and household.isWithin = (select communityID from communities
+    where belongsTo = (select stateID from state where state.name = x));
+ 
