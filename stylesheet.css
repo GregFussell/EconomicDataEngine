@@ -31,6 +31,7 @@ h1 {
     background-color: #fff;
 }
 
+/*----------REMOVE BUTTON----------*/
 .remove {
     background-color: #d3d3d3;
 }
@@ -52,8 +53,11 @@ h1 {
 }
 
 table, th, td {
+    text-align: center;
+    margin-top: 15px;
     border: 1px solid black;
-    padding: 10px;
+    padding: 10px 5px 5px 5px;
 }
+
 
 

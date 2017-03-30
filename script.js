@@ -34,18 +34,24 @@ $('.dropdown ul li').click(function(event) {
     }
 });
 
+
 $('.add').click(function() {
 	var attr1 = $('#attr1').text();
 	var attr2 = $('#attr2').text();
 	var attr3 = $('#attr3').text();
 
-	var markup = "<tr><td>" + attr1 + "</td><td>" + attr2 + 
+	var markup = "<tr class = \"addrow\"><td><button class = \"remove\">Remove Series</button></td><td>" + 
+        attr1 + "</td><td>" + attr2 + 
 		"</td><td>" + attr3 + "</td></tr>";
-	$('table').append(markup);
+        
+    $('table').append(markup);
+    $('tr:last-child').children('button').addClass('remove');
+    console.log($('tr:last-child').children('button').attr('class'));
 });
 
-$('.remove').click(function() {
-	
+$('.remove').click(function() {	
+    console.log("Hello");
+    $('.addrow').remove();
 });
 
 
