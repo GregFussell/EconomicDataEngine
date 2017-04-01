@@ -11,10 +11,15 @@ h1 {
     text-align: center;
 }
 
+.dropdown button {
+    width: 122px;
+}
+
+
 /*----------BUTTONS----------*/
 .compare {
     margin-left: 125px;
-    width: 220px;
+    width: 250px;
     background-color: #d3d3d3;
 }
 
@@ -23,7 +28,7 @@ h1 {
 }
 
 .add {
-    width: 285px;
+    width: 375px;
     background-color: #d3d3d3;
 }
 
