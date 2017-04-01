@@ -1,15 +1,39 @@
 SQL Queries based on Questions:
-
-1. fertility rates
 x= area name
+
+1. Fertility Rates
 IF COMMUNITY:
   select name, (sum(numberOfChildren)/(population/2))
   from communities, household
   where communities.name = x and household.isWithin = (select communityID from communities
     where communities.name = x);
+
 IF STATE:
   select name, (sum(numberOfChildren)/(population/2))
   from state, household
   where state.name = x and household.isWithin = (select communityID from communities
     where belongsTo = (select stateID from state where state.name = x));
  
+ 4. Median Age vs. Property Value
+ IF COMMUNITY:
+  select name, Median(Age)
+  from communities, person
+  where communities.name = x and person.isMemberOf = (select serialNo from household where 
+    household.isWithin = (select communityID from communities where communities.name = x));
+    
+  select name, Avg(propertyValue)
+  from communities, household
+  where communities.name = x and household.isWithin = (select communityID from communities
+    where communities.name = x);
+
+IF STATE:
+  select name, Median(Age)
+  from state, person
+  where state.name = x and person.isMemberOf = (select serialNo from household where 
+    household.isWithin = (select communityID from communities where belongsTo = (select 
+      stateID from state where state.name = x)));
+      
+  select name, Avg(propertyValue)
+  from state, household
+  where state.name = x and household.isWithin = (select communityID from communities
+    where belongsTo = (select stateID from state where state.name = x));
