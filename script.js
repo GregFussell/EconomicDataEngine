@@ -37,9 +37,13 @@ $('.dropdown ul li').click(function(event) {
 
 //-------------------ADD BUTTON----------------------
 $('.add').click(function() {
-	var attr1 = $('#attr1').text();
-	var attr2 = $('#attr2').text();
-	var attr3 = $('#attr3').text();
+	// var attr1 = $('#attr1').text();
+	// var attr2 = $('#attr2').text();
+	// var attr3 = $('#attr3').text();
+
+    var attr1 = "Hello";
+    var attr2 = "World";
+    var attr3 = "!";
 
 	var markup = "<tr class = \"addrow\"><td><button class = \"remove\">Remove Series</button></td><td>" + 
         attr1 + "</td><td>" + attr2 + 
@@ -50,8 +54,7 @@ $('.add').click(function() {
 
 //-------------------REMOVE BUTTON----------------
 $(document).on('click', '.remove', function() {
-    console.log('works');
-    $('tr:last').remove();
+    $(this).parents('tr').remove();
 });
 
 
