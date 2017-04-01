@@ -37,3 +37,17 @@ IF STATE:
   from state, household
   where state.name = x and household.isWithin = (select communityID from communities
     where belongsTo = (select stateID from state where state.name = x));
+
+5. Languages
+IF COMMUNITY:
+  select name, Count(distinct speaks)
+  from communities, person
+  where communities.name = x and person.isMemberOf = (select serialNo from household where 
+    household.isWithin = (select communityID from communities where communities.name = x));
+    
+IF STATE:
+  select name, Count(distinct speaks)
+  from state, person
+  where state.name = x and person.isMemberOf = (select serialNo from household where 
+    household.isWithin = (select communityID from communities where belongsTo = (select 
+      stateID from state where state.name = x)));
