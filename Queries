@@ -1,39 +1,58 @@
 SQL Queries based on Questions:
 x= area name
+y= year
 
 1. Fertility Rates
 IF COMMUNITY:
   select name, (sum(numberOfChildren)/(population/2))
   from communities, household
   where communities.name = x and household.isWithin = (select communityID from communities
-    where communities.name = x);
+    where communities.name = x) and communities.year = y and household.year = y;
 
 IF STATE:
   select name, (sum(numberOfChildren)/(population/2))
   from state, household
   where state.name = x and household.isWithin = (select communityID from communities
-    where belongsTo = (select stateID from state where state.name = x));
+    where belongsTo = (select stateID from state where state.name = x)) and state.year = y
+  and household.year = y;
  
  4. Median Age vs. Property Value
  IF COMMUNITY:
   select name, Median(Age)
   from communities, person
   where communities.name = x and person.isMemberOf = (select serialNo from household where 
-    household.isWithin = (select communityID from communities where communities.name = x));
+    household.isWithin = (select communityID from communities where communities.name = x))
+  and communities.year = y and person.year = y;
     
   select name, Avg(propertyValue)
   from communities, household
   where communities.name = x and household.isWithin = (select communityID from communities
-    where communities.name = x);
+    where communities.name = x) and communities.year = y and household.year = y;
 
 IF STATE:
   select name, Median(Age)
   from state, person
   where state.name = x and person.isMemberOf = (select serialNo from household where 
     household.isWithin = (select communityID from communities where belongsTo = (select 
-      stateID from state where state.name = x)));
+      stateID from state where state.name = x))) and state.year = y and person.year = y;
       
   select name, Avg(propertyValue)
   from state, household
   where state.name = x and household.isWithin = (select communityID from communities
-    where belongsTo = (select stateID from state where state.name = x));
+    where belongsTo = (select stateID from state where state.name = x)) and state. year = y
+  and household.year = y;
+
+5. Languages
+IF COMMUNITY:
+  select name, Count(distinct speaks)
+  from communities, person
+  where communities.name = x and person.isMemberOf = (select serialNo from household where 
+    household.isWithin = (select communityID from communities where communities.name = x))
+  and communities.year = y and person.year = y;
+    
+IF STATE:
+  select name, Count(distinct speaks)
+  from state, person
+  where state.name = x and person.isMemberOf = (select serialNo from household where 
+    household.isWithin = (select communityID from communities where belongsTo = (select 
+      stateID from state where state.name = x))) and state.year = y and person.year = y;
