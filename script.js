@@ -4,6 +4,7 @@ var ds2selector = '.dropdown#dataseries2 ul li';
 var areatypeselector = '.dropdown#areatype ul li';
 var areaselector = '.dropdown#area ul li';
 
+//------------------DROPDOWN OPTIONS---------------------
 $('.dropdown ul li').click(function(event) {
     var target = $(event.target);
 
@@ -34,7 +35,7 @@ $('.dropdown ul li').click(function(event) {
     }
 });
 
-
+//-------------------ADD BUTTON----------------------
 $('.add').click(function() {
 	var attr1 = $('#attr1').text();
 	var attr2 = $('#attr2').text();
@@ -43,15 +44,14 @@ $('.add').click(function() {
 	var markup = "<tr class = \"addrow\"><td><button class = \"remove\">Remove Series</button></td><td>" + 
         attr1 + "</td><td>" + attr2 + 
 		"</td><td>" + attr3 + "</td></tr>";
-        
+
     $('table').append(markup);
-    $('tr:last-child').children('button').addClass('remove');
-    console.log($('tr:last-child').children('button').attr('class'));
 });
 
-$('.remove').click(function() {	
-    console.log("Hello");
-    $('.addrow').remove();
+//-------------------REMOVE BUTTON----------------
+$(document).on('click', '.remove', function() {
+    console.log('works');
+    $('tr:last').remove();
 });
 
 
