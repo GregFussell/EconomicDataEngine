@@ -17,6 +17,14 @@ $('.dropdown ul li').click(function(event) { //make selected option the active e
     	$('#areatypebutton').text($(this).text());
     	$(areatypeselector).removeClass('active');
    		$(this).addClass('active');
+
+        if($(this).text() == "State") {
+            $('#arealist li').remove();
+
+            var attr = 'Hello';
+            var markup = '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' + attr + '</a></li>';
+            $('#arealist').append(markup);
+        }
     }
     if(target.parents('div#area').length) {
     	$('#areabutton').text($(this).text());
@@ -45,9 +53,10 @@ $('.add').click(function() {
     var attr2 = "World";
     var attr3 = "!";
 
-	var markup = "<tr class = \"addrow\"><td><button class = \"remove\">Remove Series</button></td><td>" + 
-        attr1 + "</td><td>" + attr2 + 
-		"</td><td>" + attr3 + "</td></tr>";
+	var markup = "<tr class = \"addrow\"><td><button class = \"remove\">Remove Series</button></td>";
+    markup += "<td>" + attr1 + "</td>";
+    markup += "<td>" + attr2 + "</td>";
+    markup += "<td>" + attr3 + "</td></tr>";
 
     $('table').append(markup);
 });
