@@ -1,24 +1,14 @@
+//------------------DROPDOWN OPTIONS---------------------
 var corrselector = '.dropdown#correlation ul li';
 var ds1selector = '.dropdown#dataseries1 ul li';
 var ds2selector = '.dropdown#dataseries2 ul li';
 var areatypeselector = '.dropdown#areatype ul li';
 var areaselector = '.dropdown#area ul li';
 
-//------------------DROPDOWN OPTIONS---------------------
-$('.dropdown ul li').click(function(event) {
+$('.dropdown ul li').click(function(event) { //make selected option the active element
     var target = $(event.target);
 
-    if(target.parents('div#correlation').length) {
-    	$('#correlationbutton').text($(this).text());
-    	$(corrselector).removeClass('active');
-   		$(this).addClass('active');
-    }
     if(target.parents('div#dataseries1').length) {
-    	$('#dataseries1button').text($(this).text());
-    	$(ds1selector).removeClass('active');
-   		$(this).addClass('active');
-    }
-    if(target.parents('div#dataseries2').length) {
     	$('#dataseries2button').text($(this).text());
     	$(ds2selector).removeClass('active');
    		$(this).addClass('active');
@@ -32,6 +22,16 @@ $('.dropdown ul li').click(function(event) {
     	$('#areabutton').text($(this).text());
     	$(areaselector).removeClass('active');
    		$(this).addClass('active');
+    }
+    if(target.parents('div#dataseries2').length) {
+        $('#dataseries1button').text($(this).text());
+        $(ds1selector).removeClass('active');
+        $(this).addClass('active');
+    }
+    if(target.parents('div#correlation').length) {
+        $('#correlationbutton').text($(this).text());
+        $(corrselector).removeClass('active');
+        $(this).addClass('active');
     }
 });
 
