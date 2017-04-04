@@ -83,6 +83,9 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
 });
 
 //-------------------ADD BUTTON----------------------
+var map = {};
+var count = 0;
+
 $(document).on('click', '.add', function() {
     var ds1 = $('#dataseries1button').text();
     var areatype = $('#areatypebutton').text();
@@ -98,19 +101,34 @@ $(document).on('click', '.add', function() {
         if(!$('table').html()) { //Add columns if there are none
             var col = "<tr><th>Remove</th>";
             col += "<th>" + ds1 + "</th></tr>";
+            map[count] = ds1;
+            count += 1;
             $('table').append(col);
         }
-        // else {
-        //     if($('th').text().search(ds1) != -1) {
-        //         var col = $('table').first('tr').html();
-        //         console.log(col);
-        //         $('table').first('tr').remove();
-        //         col = col.substring(0, col.length - 5);
-        //         col += "<th>" + ds1 + "</th></tr>";
-        //         console.log(col);
-        //         $('table').first('tr').append(col); 
-        //     }
-        // }
+        else {
+            if($('th').text().search(ds1) == -1) {
+                var col = $('table tr:first-child').html();
+                $('table tr:first-child').remove();
+                col = col.substring(0, col.length - 5);
+                col = "<tr>" + col;
+                col += "<th>" + ds1 + "</th></tr>";
+
+                $('tr').each(function() {
+                    if(!$('table tr:first-child')) {
+                        var row = $('table tr').html();
+                        row = row.substring(0, row.length - 5);
+                        console.log(row);
+                        row = "<tr>" + row;
+                        row += "<td></td></tr>";
+                    }
+                });
+
+                map[count] = ds1;
+                count += 1;
+
+                $('table').first('tr').prepend(col); 
+            }
+        }
 
         //Add rows
         var markup = "<tr><td><button class = \"remove\">Remove Series</button></td>";
@@ -120,8 +138,14 @@ $(document).on('click', '.add', function() {
             url: "test",
             success: function(result){
                 lines = result.split('\n'); 
-                for(i = 0; i < lines.length; i++) {
-                    markup += "<td>" + lines[i] + "</td>";
+                for(i = 0; i < count; i++) {
+                    if(count == i + 1) {
+                        markup += "<td>" + lines[0] + "</td>";
+                    }
+                    else {
+                        markup += "<td></td>";
+                    }
+
                     if((i + 1) == lines.length) {
                         markup += "</tr>";
                     }
