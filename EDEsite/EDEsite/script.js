@@ -74,7 +74,7 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
         $(ds1selector).removeClass('active');
         $(this).addClass('active');
     }
-    
+
     if(target.parents('div#correlation').length) {
         $('#correlationbutton').text($(this).text());
         $(corrselector).removeClass('active');
@@ -92,29 +92,41 @@ $(document).on('click', '.add', function() {
     if(ds1.search('Data Series') != -1 || 
         areatype.search('Area Type') != -1 || 
         area.search('Area') != -1) {
-        alert('Cannot add series - fill in all menus');
+            alert('Cannot add series - fill in all menus');
     }
     else {
         if(!$('table').html()) { //Add columns if there are none
             var col = "<tr><th>Remove</th>";
-            var lines = '';
-            $.ajax({ //Column names
-                url: "test2",
-                success: function(result){
-                    lines = result.split('\n'); 
-                    for(i = 0; i < lines.length; i++) {
-                        col += "<th>" + lines[i] + "</th>";
-                        if((i + 1) == lines.length) {
-                            col += "</tr>";
-                        }
-                    }  
-                    $('table').append(col);                
-                }, 
-                error: function(abc) {
-                    console.log(abc.statusText);
-                }
-            });
+            col += "<th>" + ds1 + "</th></tr>";
+            $('table').append(col);
         }
+    }
+    //         //var lines = '';
+    //         // $.ajax({ //Column names
+    //         //     url: "test2",
+    //         //     success: function(result){
+    //         //         lines = result.split('\n'); 
+    //         //         for(i = 0; i < lines.length; i++) {
+    //         //             col += "<th>" + lines[i] + "</th>";
+    //         //             if((i + 1) == lines.length) {
+    //         //                 col += "</tr>";
+    //         //             }
+    //         //         }  
+    //         //         $('table').append(col);                
+    //         //     }, 
+    //         //     error: function(abc) {
+    //         //         console.log(abc.statusText);
+    //         //     }
+    //         // });
+    //     }
+    //     else {
+    //         if($('th').text().search(ds1) != -1) {
+    //             var col = $('table').first('tr').html();
+    //             col = col.substring(0, col.length - 5);
+    //             col += "<th>" + ds1 + "</th></tr>";
+    //             $('th').append(col); 
+    //         }
+    //     }
 
         //Add rows
         var markup = "<tr><td><button class = \"remove\">Remove Series</button></td>";
@@ -136,7 +148,7 @@ $(document).on('click', '.add', function() {
                 console.log(abc.statusText);
             }
         });
-    }
+    //}
 });
 
 //-------------------COMPARE BUTTON----------------
@@ -156,6 +168,12 @@ $(document).on('click', '.compare', function() {
 //-------------------REMOVE BUTTON----------------
 $(document).on('click', '.remove', function() {
     $(this).parents('tr').remove();
+
+    // $('th').each(function() {
+    //     if($(this).is(':empty')) {
+    //         $(this).remove();
+    //     }
+    // });
 });
 
 
