@@ -11,7 +11,7 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
     //Set elements in dropdown to active if clicked
     if(target.parents('div#dataseries1').length) {
     	$('#dataseries1button').text($(this).text());
-    	$(ds2selector).removeClass('active');
+    	$(ds1selector).removeClass('active');
    		$(this).addClass('active');
     }
 
@@ -71,7 +71,7 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
 
     if(target.parents('div#dataseries2').length) {
         $('#dataseries2button').text($(this).text());
-        $(ds1selector).removeClass('active');
+        $(ds2selector).removeClass('active');
         $(this).addClass('active');
     }
 
@@ -100,33 +100,17 @@ $(document).on('click', '.add', function() {
             col += "<th>" + ds1 + "</th></tr>";
             $('table').append(col);
         }
-    }
-    //         //var lines = '';
-    //         // $.ajax({ //Column names
-    //         //     url: "test2",
-    //         //     success: function(result){
-    //         //         lines = result.split('\n'); 
-    //         //         for(i = 0; i < lines.length; i++) {
-    //         //             col += "<th>" + lines[i] + "</th>";
-    //         //             if((i + 1) == lines.length) {
-    //         //                 col += "</tr>";
-    //         //             }
-    //         //         }  
-    //         //         $('table').append(col);                
-    //         //     }, 
-    //         //     error: function(abc) {
-    //         //         console.log(abc.statusText);
-    //         //     }
-    //         // });
-    //     }
-    //     else {
-    //         if($('th').text().search(ds1) != -1) {
-    //             var col = $('table').first('tr').html();
-    //             col = col.substring(0, col.length - 5);
-    //             col += "<th>" + ds1 + "</th></tr>";
-    //             $('th').append(col); 
-    //         }
-    //     }
+        // else {
+        //     if($('th').text().search(ds1) != -1) {
+        //         var col = $('table').first('tr').html();
+        //         console.log(col);
+        //         $('table').first('tr').remove();
+        //         col = col.substring(0, col.length - 5);
+        //         col += "<th>" + ds1 + "</th></tr>";
+        //         console.log(col);
+        //         $('table').first('tr').append(col); 
+        //     }
+        // }
 
         //Add rows
         var markup = "<tr><td><button class = \"remove\">Remove Series</button></td>";
@@ -148,7 +132,7 @@ $(document).on('click', '.add', function() {
                 console.log(abc.statusText);
             }
         });
-    //}
+    }
 });
 
 //-------------------COMPARE BUTTON----------------
