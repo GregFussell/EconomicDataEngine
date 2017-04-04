@@ -56,3 +56,17 @@ IF STATE:
   where state.name = x and person.isMemberOf = (select serialNo from household where 
     household.isWithin = (select communityID from communities where belongsTo = (select 
       stateID from state where state.name = x))) and state.year = y and person.year = y;
+
+1. & 5. Economic Qrowth = Avg Income
+IF COMMUNITY:
+  select communities.name, income.value
+  from (income join household on income.serialNo = household.serialNo) join communities on 
+    household.isWithin = communities.communityID
+  where income.year = y and household.year = y and communities.year = y and communities.name = x;
+  
+IF STATE:
+  select state.name, income.value
+  from ((income join household on income.serialNo = household.serialNo) join communities on 
+    household.isWithin = communities.communityID) join state on communities.belongsTo = state.stateID
+  where income.year = y and household.year = y and communities.year = y and state.year = y
+    and state.name = x;
