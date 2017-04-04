@@ -12,49 +12,42 @@ h1 {
     text-align: center;
 }
 
+/*----------DROPDOWNS----------*/
+.dropdown {
+    display: inline-block;
+}
+
 .dropdown button {
     width: 150px;
     white-space: normal;
     margin-top: 5px;
 }
 
-/*----------BUTTONS----------*/
-.compare {
-    width: 305px;
-    background-color: #d3d3d3;
+#dataseries1 {
+    margin-left: 125px;
 }
 
-.compare:hover {
-    background-color: #fff;
-}
-
+/*-------ADD, COMPARE, REMOVE-------*/
 .add {
     margin-left: 125px;
     width: 460px;
     background-color: #d3d3d3;
 }
 
-.add:hover {
-    background-color: #fff;
+.compare {
+    width: 305px;
+    background-color: #d3d3d3;
 }
 
-/*----------REMOVE BUTTON----------*/
 .remove {
     background-color: #d3d3d3;
 }
 
-.remove:hover {
+.add:hover, .compare:hover, .remove:hover {
     background-color: #fff;
 }
 
-#dataseries1 {
-    margin-left: 125px;
-}
-
-.dropdown {
-    display: inline-block;
-}
-
+/*-------------TABLE---------------*/
 #table {
     display: inline-block;
 }
