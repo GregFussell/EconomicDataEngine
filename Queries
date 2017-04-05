@@ -84,6 +84,11 @@ IF COMMUNITY:
    having (Count(distinct i1.personalID) - Count(distinct i2.personalID)) = 
     MAX(COUNT(distinct i1.personalID) - COUNT(distinct i2.personalID));
     
+  select communities.name, Count(distinct personalID)
+  from (person join household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on 
+    (household.isWithin = communities.communityID and household.year= communities.year)
+  where communities.name = x and year = y and mobilityStatus = 2;
+ 
 IF STATE:
   select i1.state.name, i1.industry.name, MAX(COUNT(distinct i1.personalID) - COUNT(distinct i2.personalID))
   from (select * from (((industry join person on (industry.industryID = person.worksFor and industry.year = person.year)) join
@@ -97,3 +102,9 @@ IF STATE:
    where i1.industryID = i2.industryID
    having (Count(distinct i1.personalID) - Count(distinct i2.personalID)) = 
     MAX(COUNT(distinct i1.personalID) - COUNT(distinct i2.personalID));
+
+  select state.name, Count(distinct personalID)
+  from ((person join household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on 
+    (household.isWithin = communities.communityID and household.year= communities.year)) join state on (communities.belongsTo = 
+    state.stateID and communities.year = state.year)
+  where state.name = x and year = y and mobilityStatus = 2;
