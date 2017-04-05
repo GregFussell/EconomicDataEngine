@@ -108,3 +108,20 @@ IF STATE:
     (household.isWithin = communities.communityID and household.year= communities.year)) join state on (communities.belongsTo = 
     state.stateID and communities.year = state.year)
   where state.name = x and year = y and mobilityStatus = 2;
+
+2. Poverty
+IF COMMUNITY:
+  select communities.name, Count(distinct personalID)
+  from ((income join person on (income.pID = person.personalID and income.year = person.year)) join household on (person.serialNo = 
+    household.serialNo and person.year = household.year)) join communities on (household.isWithin = communities.communityID and 
+    household.year = communities.year)
+  where communities.name = x and year = y
+  having povertyIncomeRatio < 100;
+  
+IF STATE:
+  select state.name, Count(distinct personalID)
+  from (((income join person on (income.pID = person.personalID and income.year = person.year)) join household on (person.serialNo = 
+    household.serialNo and person.year = household.year)) join communities on (household.isWithin = communities.communityID and 
+    household.year = communities.year)) join state on (communities.belongsTo = state.stateID and communities.year = state.year)
+  where state.name = x and year = y
+  having povertyIncomeRatio < 100;
