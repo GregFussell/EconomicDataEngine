@@ -125,3 +125,30 @@ IF STATE:
     household.year = communities.year)) join state on (communities.belongsTo = state.stateID and communities.year = state.year)
   where state.name = x and year = y
   having povertyIncomeRatio < 100;
+
+OTHER QUERIES:
+
+Most Widely Spoken Language:
+IF COMMUNITY:
+  select communities.name, primarylanguage.name
+  from ((primarylanguage join person on languageID = person.speaks) join household on (person.serialNo = household.serialNo and 
+    person.year = household.year)) join communities on (household.isWithin = communities.communityID and household.year = 
+    communities.year)
+  where communities = x aand year = y
+  group by languageID
+  having Count(*) = (select Max(Count(*)) from ((primarylanguage join person on languageID = person.speaks) join household on (person.serialNo = household.serialNo and 
+    person.year = household.year)) join communities on (household.isWithin = communities.communityID and household.year = 
+    communities.year) where communities.name = x and year = y group by languageID);
+
+IF STATE:
+  select state.name, primarylanguage.name
+  from (((primarylanguage join person on languageID = person.speaks) join household on (person.serialNo = household.serialNo and 
+    person.year = household.year)) join communities on (household.isWithin = communities.communityID and household.year = 
+    communities.year)) join state on (communities.belongsTo = state.stateID and communities.year = state.year)
+  where state = x aand year = y
+  group by languageID
+  having Count(*) = (select Max(Count(*)) from (((primarylanguage join person on languageID = person.speaks) join household on (person.serialNo = household.serialNo and 
+    person.year = household.year)) join communities on (household.isWithin = communities.communityID and household.year = 
+    communities.year)) join state on (communities.belongsTo = state.stateID and communities.year and state.year)
+    where communities.name = x and year = y group by languageID);
+    
