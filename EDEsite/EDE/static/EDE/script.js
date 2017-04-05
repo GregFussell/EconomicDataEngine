@@ -9,13 +9,13 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
     var target = $(event.target);
 
     //Set elements in dropdown to active if clicked
-    if(target.parents('div#dataseries1').length) {
+    if(target.parents('#dataseries1').length) {
     	$('#dataseries1button').text($(this).text());
     	$(ds1selector).removeClass('active');
    		$(this).addClass('active');
     }
 
-    if(target.parents('div#areatype').length) {
+    if(target.parents('#areatype').length) {
     	$('#areatypebutton').text($(this).text());
     	$(areatypeselector).removeClass('active');
    		$(this).addClass('active');
@@ -27,19 +27,20 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
             var markup = '';
             var lines = '';
             
-            $.ajax({
-                url: "test",
-                success: function(result){
-                    lines = result.split('\n'); 
+            // $.ajax({
+            //     url: "test",
+            //     success: function(result){
+                    lines = "hello";
+                    //lines = result.split('\n'); 
                     for(i = 0; i < lines.length; i++) {
                         markup += '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' + lines[i] + '</a></li>';
                     }  
                     $('#arealist').append(markup);                
-                }, 
-                error: function(abc) {
-                    console.log(abc.statusText);
-                }
-            });
+            //     }, 
+            //     error: function(abc) {
+            //         console.log(abc.statusText);
+            //     }
+            // });
         } //Put in community names if "Community" is selected from Area Type
         else if($(this).text() == "Community") {
             $('#arealist li').remove();
@@ -47,35 +48,36 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
             var markup = '';
             var lines = '';
             
-            $.ajax({
-                url: "test2",
-                success: function(result){
-                    lines = result.split('\n'); 
+            // $.ajax({
+            //     url: "test2",
+            //     success: function(result){
+                    lines = "test";
+                    //lines = result.split('\n'); 
                     for(i = 0; i < lines.length; i++) {
                         markup += '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' + lines[i] + '</a></li>';
-                    }  
+                    } 
                     $('#arealist').append(markup);                
-                }, 
-                error: function(abc) {
-                    console.log(abc.statusText);
-                }
-            });
+            //     }, 
+            //     error: function(abc) {
+            //         console.log(abc.statusText);
+            //     }
+            // });
         }
     }
 
-    if(target.parents('div#area').length) {
+    if(target.parents('#area').length) {
     	$('#areabutton').text($(this).text());
     	$(areaselector).removeClass('active');
    		$(this).addClass('active');
     }
 
-    if(target.parents('div#dataseries2').length) {
+    if(target.parents('#dataseries2').length) {
         $('#dataseries2button').text($(this).text());
         $(ds2selector).removeClass('active');
         $(this).addClass('active');
     }
 
-    if(target.parents('div#correlation').length) {
+    if(target.parents('#correlation').length) {
         $('#correlationbutton').text($(this).text());
         $(corrselector).removeClass('active');
         $(this).addClass('active');
@@ -133,10 +135,11 @@ $(document).on('click', '.add', function() {
 
         $('table').append(markup);
 
-        $.ajax({ //Row names
-            url: "test",
-            success: function(result){
-                lines = result.split('\n'); 
+        // $.ajax({ //Row names
+        //     url: "test",
+        //     success: function(result){
+                lines = "test";
+        //         lines = result.split('\n'); 
                 var colcount = 1;
                 $('table').find('th').each(function() {
                     if($(this).text() == ds1) {
@@ -146,11 +149,11 @@ $(document).on('click', '.add', function() {
                     }
                     colcount += 1;            
                 }); 
-            }, 
-            error: function(abc) {
-                console.log(abc.statusText);
-            }
-        });
+        //     }, 
+        //     error: function(abc) {
+        //         console.log(abc.statusText);
+        //     }
+        // });
     }
 });
 
