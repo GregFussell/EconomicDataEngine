@@ -98,7 +98,7 @@ $(document).on('click', '.add', function() {
             alert('Cannot add series - fill in all menus');
     }
     else {
-        if(!$('table').html()) { //Add columns if there are none
+        if(!$('table').html() || ($('table').html() == '<tr></tr>')) { //Add columns if there are none
             var col = "<tr><th>Remove</th>";
             col += "<th>" + ds1 + "</th></tr>";
             map[count] = ds1;
@@ -113,14 +113,8 @@ $(document).on('click', '.add', function() {
                 col = "<tr>" + col;
                 col += "<th>" + ds1 + "</th></tr>";
 
-                $('tr').each(function() {
-                    if(!$('table tr:first-child')) {
-                        var row = $('table tr').html();
-                        row = row.substring(0, row.length - 5);
-                        console.log(row);
-                        row = "<tr>" + row;
-                        row += "<td></td></tr>";
-                    }
+                $('table').find('tr').each(function() {
+                    $(this).find('td:last-child').after('<td></td>');
                 });
 
                 map[count] = ds1;
@@ -133,24 +127,25 @@ $(document).on('click', '.add', function() {
         //Add rows
         var markup = "<tr><td><button class = \"remove\">Remove Series</button></td>";
         var lines = '';
+        for(i = 0; i < count; i++) {
+            markup += "<td></td>";
+        }
+
+        $('table').append(markup);
 
         $.ajax({ //Row names
             url: "test",
             success: function(result){
                 lines = result.split('\n'); 
-                for(i = 0; i < count; i++) {
-                    if(count == i + 1) {
-                        markup += "<td>" + lines[0] + "</td>";
+                var colcount = 1;
+                $('table').find('th').each(function() {
+                    if($(this).text() == ds1) {
+                        $('table').find('tr:last-child').each(function() {
+                            $(this).find('td:nth-child(' + colcount +')').text(lines[0]);
+                        });
                     }
-                    else {
-                        markup += "<td></td>";
-                    }
-
-                    if((i + 1) == lines.length) {
-                        markup += "</tr>";
-                    }
-                }  
-                $('table').append(markup);                
+                    colcount += 1;            
+                }); 
             }, 
             error: function(abc) {
                 console.log(abc.statusText);
@@ -177,11 +172,23 @@ $(document).on('click', '.compare', function() {
 $(document).on('click', '.remove', function() {
     $(this).parents('tr').remove();
 
-    // $('th').each(function() {
-    //     if($(this).is(':empty')) {
-    //         $(this).remove();
-    //     }
-    // });
+    var colcount = 1;
+    $('table').find('th').each(function() {
+        var rowcount = 0;
+        $("table tr td:nth-child(" + colcount + ")").each(function () {
+            if($(this).html()) {
+                rowcount += 1;
+            }
+        });
+        if(rowcount == 0) {
+            $(this).remove();
+        }
+    }); 
+
+    if($('table').html() == '<tr></tr>') {
+        count = 0;
+    }          
+    
 });
 
 
