@@ -1,36 +1,3 @@
-// $(document).on('click', '.intro', function() {
-//     $.ajax({
-//         url: "functions.php",
-//         //type: "post",
-//         data: {
-//             name: 'bar',
-//             action: 'hello'
-//         },
-//         success: function(result){
-//             console.log(result);            
-//         }, 
-//         error: function(abc) {
-//             console.log(abc.statusText);
-//         }
-//     });
-// });
-
-// var str = "hello";
-// $(document).on('click', '.intro', function(str) {
-//     var xmlhttp = new XMLHttpRequest();
-//     xmlhttp.onreadystatechange = function() {
-//         if(this.readyState == 4 && this.status == 200) {
-//             //console.log(this.responseText);
-//         }
-//     }
-//     xmlhttp.open("GET", "functions.php?q=" + str, true);
-//     xmlhttp.send();
-// });
-
-
-
-
-
 //------------------DROPDOWN OPTIONS---------------------
 var corrselector = '.dropdown#correlation ul li';
 var ds1selector = '.dropdown#dataseries1 ul li';
@@ -56,45 +23,31 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
         //Put in state names if "State" is selected from Area Type
         if($(this).text() == "State") {
             $('#arealist li').remove();
-
-            var markup = '';
-            var lines = '';
             
-            // $.ajax({
-            //     url: "test",
-            //     success: function(result){
-                    lines = "hello";
-                    //lines = result.split('\n'); 
-                    for(i = 0; i < lines.length; i++) {
-                        markup += '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' + lines[i] + '</a></li>';
-                    }  
-                    $('#arealist').append(markup);                
-            //     }, 
-            //     error: function(abc) {
-            //         console.log(abc.statusText);
-            //     }
-            // });
+            $.get("functions.php", 
+                { 'check': 'areatype',
+                    'var1': $(this).text(), 
+                    'var2' : 'Florida'
+                },
+                function(data) { 
+                    $('#arealist').append(data); 
+                }, 
+                "text"
+            );
         } //Put in community names if "Community" is selected from Area Type
         else if($(this).text() == "Community") {
             $('#arealist li').remove();
 
-            var markup = '';
-            var lines = '';
-            
-            // $.ajax({
-            //     url: "test2",
-            //     success: function(result){
-                    lines = "test";
-                    //lines = result.split('\n'); 
-                    for(i = 0; i < lines.length; i++) {
-                        markup += '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' + lines[i] + '</a></li>';
-                    } 
-                    $('#arealist').append(markup);                
-            //     }, 
-            //     error: function(abc) {
-            //         console.log(abc.statusText);
-            //     }
-            // });
+            $.get("functions.php", 
+                { 'check': 'areatype',
+                    'var1': $(this).text(), 
+                    'var2' : 'Miami'
+                },
+                function(data) { 
+                    $('#arealist').append(data); 
+                }, 
+                "text"
+            );
         }
     }
 
