@@ -37,11 +37,11 @@ from person join household on (person.serialNo = household.serialNo and  person.
 where states.name = x  and person.year = y
 group by states.name;
       
-  select name, Avg(propertyValue)
-  from states, household
-  where states.name = x and household.isWithin = (select communityID from communities
-    where belongsTo = (select stateID from states where states.name = x)) and states.year = y
-  and household.year = y;
+select states.name, Avg(coalesce(household.VALP, 0))
+from household join communities on (PUMA = communityID and communities.year = household.year) join states on 
+  (communities.BELONGSTO = states.stateID and communities.year = states.year)
+where states.name = 'Rhode Island' and household.year = 2012 and household.NP != 0
+group by states.name;
 
 5. Languages
 IF COMMUNITY:
