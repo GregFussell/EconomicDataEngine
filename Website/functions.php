@@ -1,15 +1,13 @@
 <?php
-//Query
     $conn = oci_connect($username = 'cgfussel', $password = 'Economy321', $connection_string = '//oracle.cise.ufl.edu/orcl');
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } 
 
     $check = $_GET['check'];
     $var1 = $_GET['var1'];
-    $var2 = $_GET['var2'];
     $data = '';
 
     if($check == 'areatype') {
@@ -32,11 +30,7 @@ if ($conn->connect_error) {
              $data = $data . '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $name . '</a></li>';
             }
             echo $data;
-        }
-
-        // $data = '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $var1 . '</a></li>';
-        // $data = $data . '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $var2 . '</a></li>';
-        // echo $data;        
+        }     
     }
 
     // Close the Oracle connection

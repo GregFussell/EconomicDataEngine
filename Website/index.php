@@ -2,10 +2,6 @@
 <html>
 	<?php 
 		include "header.php";
-		//include 'functions.php';
-
-		//oci_close($conn);
-
 	?>
 
 	<head>

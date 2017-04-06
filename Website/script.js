@@ -26,8 +26,7 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
             
             $.get("functions.php", 
                 { 'check': 'areatype',
-                    'var1': $(this).text(), 
-                    'var2' : 'Florida'
+                    'var1': $(this).text()
                 },
                 function(data) { 
                     $('#arealist').append(data); 
@@ -40,8 +39,7 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
 
             $.get("functions.php", 
                 { 'check': 'areatype',
-                    'var1': $(this).text(), 
-                    'var2' : 'Miami'
+                    'var1': $(this).text() 
                 },
                 function(data) { 
                     $('#arealist').append(data); 
