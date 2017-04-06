@@ -6,7 +6,7 @@
 //     die("Connection failed: " . $conn->connect_error);
 // } 
 
-	//echo "Connected PHP script to Oracle!\n";
+// 	echo "Connected PHP script to Oracle!\n";
  
  // Close the Oracle connection
 // oci_close($conn);
