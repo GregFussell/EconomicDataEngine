@@ -1,3 +1,27 @@
+$(document).on('click', '.intro', function() {
+    $.ajax({
+        url: "functions.php",
+        type: "post",
+        data: {
+            name: 'bar',
+            action: 'hello'
+        },
+        success: function(result){
+            console.log(result);            
+        }, 
+        error: function(abc) {
+            console.log(abc.statusText);
+        }
+    });
+});
+
+
+
+
+
+
+
+
 //------------------DROPDOWN OPTIONS---------------------
 var corrselector = '.dropdown#correlation ul li';
 var ds1selector = '.dropdown#dataseries1 ul li';
