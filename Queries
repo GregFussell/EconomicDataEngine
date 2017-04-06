@@ -4,17 +4,18 @@ y= year
 
 1. Fertility Rates
 IF COMMUNITY:
-  select name, (sum(numberOfChildren)/(population/2))
+  select name, Avg(numberofChildren)
   from communities, household
   where communities.name = x and household.isWithin = (select communityID from communities
     where communities.name = x) and communities.year = y and household.year = y;
 
 IF STATE:
-  select name, (sum(numberOfChildren)/(population/2))
-  from state, household
-  where state.name = x and household.isWithin = (select communityID from communities
-    where belongsTo = (select stateID from state where state.name = x)) and state.year = y
-  and household.year = y;
+  select name, Avg(numberofChildren)
+  from states, household
+  where states.name = x and household.isWithin = (select communityID from communities
+    where belongsTo = (select stateID from states where states.name = x)) and states.year = y
+    and household.year = y
+  group by household.year;
  
  4. Median Age vs. Property Value
  IF COMMUNITY:
@@ -31,15 +32,15 @@ IF STATE:
 
 IF STATE:
   select name, Median(Age)
-  from state, person
-  where state.name = x and person.isMemberOf = (select serialNo from household where 
+  from states, person
+  where states.name = x and person.isMemberOf = (select serialNo from household where 
     household.isWithin = (select communityID from communities where belongsTo = (select 
-      stateID from state where state.name = x))) and state.year = y and person.year = y;
+      stateID from states where states.name = x))) and states.year = y and person.year = y;
       
   select name, Avg(propertyValue)
-  from state, household
-  where state.name = x and household.isWithin = (select communityID from communities
-    where belongsTo = (select stateID from state where state.name = x)) and state. year = y
+  from states, household
+  where states.name = x and household.isWithin = (select communityID from communities
+    where belongsTo = (select stateID from states where states.name = x)) and states.year = y
   and household.year = y;
 
 5. Languages
@@ -52,10 +53,10 @@ IF COMMUNITY:
     
 IF STATE:
   select name, Count(distinct speaks)
-  from state, person
-  where state.name = x and person.isMemberOf = (select serialNo from household where 
+  from states, person
+  where states.name = x and person.isMemberOf = (select serialNo from household where 
     household.isWithin = (select communityID from communities where belongsTo = (select 
-      stateID from state where state.name = x))) and state.year = y and person.year = y;
+      stateID from states where states.name = x))) and states.year = y and person.year = y;
 
 1. & 5. Economic Qrowth = Avg Income
 IF COMMUNITY:
@@ -65,11 +66,11 @@ IF COMMUNITY:
   where income.year = y and household.year = y and communities.year = y and communities.name = x;
   
 IF STATE:
-  select state.name, income.value
+  select states.name, income.value
   from ((income join household on income.serialNo = household.serialNo) join communities on 
-    household.isWithin = communities.communityID) join state on communities.belongsTo = state.stateID
-  where income.year = y and household.year = y and communities.year = y and state.year = y
-    and state.name = x;
+    household.isWithin = communities.communityID) join states on communities.belongsTo = states.stateID
+  where income.year = y and household.year = y and communities.year = y and states.year = y
+    and states.name = x;
 
 3. Industry Growth vs Migration
 IF COMMUNITY:
@@ -90,24 +91,24 @@ IF COMMUNITY:
   where communities.name = x and year = y and mobilityStatus = 2;
  
 IF STATE:
-  select i1.state.name, i1.industry.name, MAX(COUNT(distinct i1.personalID) - COUNT(distinct i2.personalID))
+  select i1.states.name, i1.industry.name, MAX(COUNT(distinct i1.personalID) - COUNT(distinct i2.personalID))
   from (select * from (((industry join person on (industry.industryID = person.worksFor and industry.year = person.year)) join
    household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on (household.isWithin =
-   communities.communityID and household.year = communities.year)) join state on (communities.belongsTo = state.stateID and 
-   communities.year = state.year) where state.name = x and year = y) as i1, 
+   communities.communityID and household.year = communities.year)) join states on (communities.belongsTo = states.stateID and 
+   communities.year = states.year) where states.name = x and year = y) as i1, 
    (select * from (((industry join person on (industry.industryID = person.worksFor and industry.year = person.year)) join
    household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on (household.isWithin =
-   communities.communityID and household.year = communities.year)) join state on (communities.belongsTo = state.stateID and
-   communities.year = state.year) where state.name = x and year = y) as i2
+   communities.communityID and household.year = communities.year)) join states on (communities.belongsTo = states.stateID and
+   communities.year = states.year) where states.name = x and year = y) as i2
    where i1.industryID = i2.industryID
    having (Count(distinct i1.personalID) - Count(distinct i2.personalID)) = 
     MAX(COUNT(distinct i1.personalID) - COUNT(distinct i2.personalID));
 
-  select state.name, Count(distinct personalID)
+  select states.name, Count(distinct personalID)
   from ((person join household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on 
-    (household.isWithin = communities.communityID and household.year= communities.year)) join state on (communities.belongsTo = 
-    state.stateID and communities.year = state.year)
-  where state.name = x and year = y and mobilityStatus = 2;
+    (household.isWithin = communities.communityID and household.year= communities.year)) join states on (communities.belongsTo = 
+    states.stateID and communities.year = states.year)
+  where states.name = x and year = y and mobilityStatus = 2;
 
 2. Poverty
 IF COMMUNITY:
@@ -119,11 +120,11 @@ IF COMMUNITY:
   having povertyIncomeRatio < 100;
   
 IF STATE:
-  select state.name, Count(distinct personalID)
+  select states.name, Count(distinct personalID)
   from (((income join person on (income.pID = person.personalID and income.year = person.year)) join household on (person.serialNo = 
     household.serialNo and person.year = household.year)) join communities on (household.isWithin = communities.communityID and 
-    household.year = communities.year)) join state on (communities.belongsTo = state.stateID and communities.year = state.year)
-  where state.name = x and year = y
+    household.year = communities.year)) join states on (communities.belongsTo = states.stateID and communities.year = states.year)
+  where states.name = x and year = y
   having povertyIncomeRatio < 100;
 
 OTHER QUERIES:
@@ -141,14 +142,14 @@ IF COMMUNITY:
     communities.year) where communities.name = x and year = y group by languageID);
 
 IF STATE:
-  select state.name, primarylanguage.name
+  select states.name, primarylanguage.name
   from (((primarylanguage join person on languageID = person.speaks) join household on (person.serialNo = household.serialNo and 
     person.year = household.year)) join communities on (household.isWithin = communities.communityID and household.year = 
-    communities.year)) join state on (communities.belongsTo = state.stateID and communities.year = state.year)
-  where state = x aand year = y
+    communities.year)) join states on (communities.belongsTo = states.stateID and communities.year = states.year)
+  where states = x aand year = y
   group by languageID
   having Count(*) = (select Max(Count(*)) from (((primarylanguage join person on languageID = person.speaks) join household on (person.serialNo = household.serialNo and 
     person.year = household.year)) join communities on (household.isWithin = communities.communityID and household.year = 
-    communities.year)) join state on (communities.belongsTo = state.stateID and communities.year and state.year)
+    communities.year)) join states on (communities.belongsTo = states.stateID and communities.year and states.year)
     where communities.name = x and year = y group by languageID);
     
