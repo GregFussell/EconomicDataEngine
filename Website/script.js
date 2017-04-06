@@ -1,3 +1,4 @@
+var temp;
 //------------------DROPDOWN OPTIONS---------------------
 var corrselector = '.dropdown#correlation ul li';
 var ds1selector = '.dropdown#dataseries1 ul li';
@@ -21,12 +22,14 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
    		$(this).addClass('active');
 
         //Put in state names if "State" is selected from Area Type
-        if($(this).text() == "State") {
+        if($(this).text() == "States") {
             $('#arealist li').remove();
             
             $.get("functions.php", 
                 { 'check': 'areatype',
-                    'var1': $(this).text()
+                    'var1': $(this).text(),
+                    'var2': '',
+                    'var3': ''
                 },
                 function(data) { 
                     $('#arealist').append(data); 
@@ -34,12 +37,14 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
                 "text"
             );
         } //Put in community names if "Community" is selected from Area Type
-        else if($(this).text() == "Community") {
+        else if($(this).text() == "Communities") {
             $('#arealist li').remove();
 
             $.get("functions.php", 
                 { 'check': 'areatype',
-                    'var1': $(this).text() 
+                    'var1': $(this).text(),
+                    'var2': '',
+                    'var3': ''
                 },
                 function(data) { 
                     $('#arealist').append(data); 
@@ -103,34 +108,36 @@ $(document).on('click', '.add', function() {
             }
         }
 
-        //Add rows
+        //Add empty rows
         var markup = "<tr><td><button class = \"remove\">Remove Series</button></td>";
-        var lines = '';
         for(i = 0; i < count; i++) {
             markup += "<td></td>";
         }
-
         $('table').append(markup);
 
-        // $.ajax({ //Row names
-        //     url: "test",
-        //     success: function(result){
-                lines = "test";
-        //         lines = result.split('\n'); 
-                var colcount = 1;
-                $('table').find('th').each(function() {
-                    if($(this).text() == ds1) {
-                        $('table').find('tr:last-child').each(function() {
-                            $(this).find('td:nth-child(' + colcount +')').text(lines[0]);
-                        });
-                    }
-                    colcount += 1;            
-                }); 
-        //     }, 
-        //     error: function(abc) {
-        //         console.log(abc.statusText);
-        //     }
-        // });
+        //Get query results for data series 1
+        $.get("functions.php", 
+            { 'check': 'add',
+                'var1': ds1,
+                'var2': areatype,
+                'var3': area
+            },
+            function(data) { 
+                temp = data; 
+            }, 
+            "text"
+        );
+
+        //Put data in the table
+        var colcount = 1;
+        $('table').find('th').each(function() {
+            if($(this).text() == ds1) {
+                $('table').find('tr:last-child').each(function() {
+                    $(this).find('td:nth-child(' + colcount +')').text(temp);
+                });
+            }
+            colcount += 1;            
+        }); 
     }
 });
 

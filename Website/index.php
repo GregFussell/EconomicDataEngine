@@ -45,8 +45,8 @@
 		    <span class="caret"></span></button>
 
 		    <ul class="dropdown-menu" id = "areatypelist" role="menu" aria-labelledby="menu1">
-		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">State</a></li>
-		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Community</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">States</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Communities</a></li>
 		    </ul>
  		</div>
 
