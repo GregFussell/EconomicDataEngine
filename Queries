@@ -4,13 +4,13 @@ y= year
 
 1. Fertility Rates
 IF COMMUNITY:
-  select name, (sum(numberOfChildren)/(population/2))
+  select name, Avg(numberofChildren)
   from communities, household
   where communities.name = x and household.isWithin = (select communityID from communities
     where communities.name = x) and communities.year = y and household.year = y;
 
 IF STATE:
-  select name, (sum(numberOfChildren)/(population/2))
+  select name, Avg(numberofChildren)
   from state, household
   where state.name = x and household.isWithin = (select communityID from communities
     where belongsTo = (select stateID from state where state.name = x)) and state.year = y
