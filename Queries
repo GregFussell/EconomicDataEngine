@@ -18,11 +18,11 @@ IF STATE:
  
  4. Median Age vs. Property Value
  IF COMMUNITY:
-  select name, Median(Age)
-  from communities, person
-  where communities.name = x and person.isMemberOf = (select serialNo from household where 
-    household.isWithin = (select communityID from communities where communities.name = x))
-  and communities.year = y and person.year = y;
+select communities.name, Median(person.Agep)
+from person join household on (person.serialNo = household.serialNo and  person.year = household.year)
+  join communities on (PUMA = communityID and communities.year = household.year)
+where communities.name = x and person.year = y
+group by communities.name;
     
   select name, Avg(propertyValue)
   from communities, household
