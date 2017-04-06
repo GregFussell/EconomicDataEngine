@@ -85,7 +85,6 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
 });
 
 //-------------------ADD BUTTON----------------------
-var map = {};
 var count = 0;
 
 $(document).on('click', '.add', function() {
@@ -103,26 +102,20 @@ $(document).on('click', '.add', function() {
         if(!$('table').html() || ($('table').html() == '<tr></tr>')) { //Add columns if there are none
             var col = "<tr><th>Remove</th>";
             col += "<th>" + ds1 + "</th></tr>";
-            map[count] = ds1;
             count += 1;
             $('table').append(col);
         }
         else {
             if($('th').text().search(ds1) == -1) {
-                var col = $('table tr:first-child').html();
-                $('table tr:first-child').remove();
-                col = col.substring(0, col.length - 5);
-                col = "<tr>" + col;
-                col += "<th>" + ds1 + "</th></tr>";
+                //add new column name
+                $('table').find('tr:first-child th:last-child').after('<th>' + ds1 + '</th>');
 
+                //add the new column
                 $('table').find('tr').each(function() {
                     $(this).find('td:last-child').after('<td></td>');
                 });
 
-                map[count] = ds1;
                 count += 1;
-
-                $('table').first('tr').prepend(col); 
             }
         }
 
