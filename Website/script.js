@@ -1,22 +1,31 @@
-$(document).on('click', '.intro', function() {
-    $.ajax({
-        url: "functions.php",
-        type: "post",
-        data: {
-            name: 'bar',
-            action: 'hello'
-        },
-        success: function(result){
-            console.log(result);            
-        }, 
-        error: function(abc) {
-            console.log(abc.statusText);
-        }
-    });
-});
+// $(document).on('click', '.intro', function() {
+//     $.ajax({
+//         url: "functions.php",
+//         //type: "post",
+//         data: {
+//             name: 'bar',
+//             action: 'hello'
+//         },
+//         success: function(result){
+//             console.log(result);            
+//         }, 
+//         error: function(abc) {
+//             console.log(abc.statusText);
+//         }
+//     });
+// });
 
-
-
+// var str = "hello";
+// $(document).on('click', '.intro', function(str) {
+//     var xmlhttp = new XMLHttpRequest();
+//     xmlhttp.onreadystatechange = function() {
+//         if(this.readyState == 4 && this.status == 200) {
+//             //console.log(this.responseText);
+//         }
+//     }
+//     xmlhttp.open("GET", "functions.php?q=" + str, true);
+//     xmlhttp.send();
+// });
 
 
 

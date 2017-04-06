@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 	<?php 
-	include 'header.php';
-	include 'functions.php';
+		include 'header.php';
+		//include 'functions.php';
 
-	oci_close($conn);
+		oci_close($conn);
 
 	?>
 
@@ -16,11 +16,23 @@
 
 	<body>
 		<h1>Economic Data Engine</h1>
-		<div class = "intro">
+		<div onclick = "hellophp()" class = "intro">
 			<p>Welcome to the Economic Data Engine, or EDE for short! The economy is the engine of human prosperity. Therefore, it is crucial that all people have a decent understanding of the economy at the very least. This application utilizes data from the United States (U.S.) census to identify and predict factors relating to economic growth within communities in the U.S.</p>
 			<p>To use the EDE, you must first add a data series from a certain location. Using the "Data Series" dropdown menu under "Add Series," you will pick what kind of data you want. Then, select whether you want to see the results from a state or a smaller community with the "Area Type" option. Once this is selected, the "Area" menu will provide a range of communities to select from based on your area type. After you click the "Add Series" button, you will see data from the information you inputted.</p>
 			<p>To compare your added series to another series from the same location, you will specify which kind of data you want to look at with the "Data Series" menu under the "Compare Series" button. Next, select the type of correlation you desire, and click "Compare Series," and the results will appear.</p>
 		</div>
+
+		<script>
+			function hellophp() {
+				<?php 
+					include 'functions.php';
+
+					$h = hello();
+					//$g = "hello";
+					echo "<p>$h</p>";
+				?>
+			}
+		</script>
 
 		<button class = "add">Add Series</button>
 		<button class = "compare">Compare Series</button>
