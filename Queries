@@ -14,7 +14,8 @@ IF STATE:
   from state, household
   where state.name = x and household.isWithin = (select communityID from communities
     where belongsTo = (select stateID from state where state.name = x)) and state.year = y
-  and household.year = y;
+    and household.year = y
+  group by household.year;
  
  4. Median Age vs. Property Value
  IF COMMUNITY:
