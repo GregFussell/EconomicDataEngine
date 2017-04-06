@@ -9,6 +9,7 @@
     while(oci_fetch($stid)) {
         echo "Name: $name";
     }
+    
     // Close the Oracle connection
     oci_free_statement($stid)
 ?>
