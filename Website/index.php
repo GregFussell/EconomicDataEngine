@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<?php 
-		$test = "Hello World"; 
+	include 'header.php';
+	include 'functions.php';
+
+	oci_close($conn);
+
 	?>
 
 	<head>
