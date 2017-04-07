@@ -18,7 +18,7 @@ h1 {
 }
 
 .dropdown button {
-    width: 150px;
+    width: 197px;
     white-space: normal;
     margin-top: 5px;
 }
@@ -30,16 +30,11 @@ h1 {
 /*-------ADD, COMPARE, REMOVE-------*/
 .add {
     margin-left: 125px;
-    width: 460px;
+    width: 800px;
     background-color: #d3d3d3;
 }
 
-.compare {
-    width: 305px;
-    background-color: #d3d3d3;
-}
-
-.remove {
+.compare, .remove {
     background-color: #d3d3d3;
 }
 

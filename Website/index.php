@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 <html>
-	<?php 
-		include "header.php";
-	?>
-
 	<head>
 		<title>Economic Data Engine</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -19,11 +15,10 @@
 		</div>
 
 		<button class = "add">Add Series</button>
-		<button class = "compare">Compare Series</button>
 
 		<br>
 
- 		 <div class="dropdown" id = "dataseries1">
+ 		<div class="dropdown" id = "dataseries1">
 		    <button class="btn btn-default dropdown-toggle" type="button" id="dataseries1button" data-toggle="dropdown">Data Series
 		    <span class="caret"></span></button>
 
@@ -37,6 +32,20 @@
 		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Primary Language</a></li>
 		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Property Value</a></li>
 		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Race</a></li>
+		    </ul>
+ 		</div>
+
+ 		 <div class="dropdown" id = "year">
+		    <button class="btn btn-default dropdown-toggle" type="button" id="yearbutton" data-toggle="dropdown">Year
+		    <span class="caret"></span></button>
+
+		    <ul class="dropdown-menu" id = "dataseries1list" role="menu" aria-labelledby="menu1">
+			  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">2011-2015</a></li>      
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">2015</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">2014</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">2013</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">2012</a></li>
+		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">2011</a></li>
 		    </ul>
  		</div>
 
@@ -58,7 +67,7 @@
 		    </ul>
  		</div>
 
- 		<div class="dropdown" id = "dataseries2">
+<!--  		<div class="dropdown" id = "dataseries2">
 		    <button class="btn btn-default dropdown-toggle" type="button" id="dataseries2button" data-toggle="dropdown">Data Series
 		    <span class="caret"></span></button>
 
@@ -84,7 +93,7 @@
 		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Linear</a></li>
 		      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Quadratic</a></li>
 		    </ul>
- 		</div>
+ 		</div> -->
 
  		<br>
 

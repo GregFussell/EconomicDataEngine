@@ -11,6 +11,7 @@
     $var1 = $_GET['var1'];
     $var2 = $_GET['var2'];
     $var3 = $_GET['var3'];
+    $var4 = $_GET['var4'];
 
     //Results stored in $data
     $data = '';
@@ -98,6 +99,20 @@
             oci_execute($stid);
         }
         
+        while(oci_fetch($stid)) {
+            $data = $name;
+        }
+        echo $data;
+    }
+    else if($check == 'compare') {
+        //$var1 is the first area to compare
+        //$var2 is the second area to compare
+        //$var3 is the first data series to compare
+        //$var4 is the second data series to compare
+         $stid = oci_parse($conn, 'SELECT distinct name FROM ' . $var1);
+        oci_define_by_name($stid, 'NAME', $name);
+        oci_execute($stid);
+
         while(oci_fetch($stid)) {
             $data = $name;
         }
