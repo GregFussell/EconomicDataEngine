@@ -46,7 +46,7 @@
         //$var3 is the specific state or community 
         if($var1 == 'Age') {
             //ADD DIFFERENT QUERY
-            $stid = oci_parse($conn, 'SELECT distinct name FROM Communities');
+            $stid = oci_parse($conn, 'SELECT distinct name from States');
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
