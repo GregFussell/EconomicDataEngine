@@ -1,8 +1,7 @@
 var temp;
 //------------------DROPDOWN OPTIONS---------------------
-var corrselector = '.dropdown#correlation ul li';
 var ds1selector = '.dropdown#dataseries1 ul li';
-var ds2selector = '.dropdown#dataseries2 ul li';
+var yearselector = '.dropdown#year ul li';
 var areatypeselector = '.dropdown#areatype ul li';
 var areaselector = '.dropdown#area ul li';
 
@@ -18,7 +17,7 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
 
     if(target.parents('#year').length) {
         $('#yearbutton').text($(this).text());
-        $(ds1selector).removeClass('active');
+        $(yearselector).removeClass('active');
         $(this).addClass('active');
     }
 
