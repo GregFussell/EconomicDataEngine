@@ -61,17 +61,24 @@ group by states.name;
 
 1. & 5. Economic Qrowth = Avg Income
 IF COMMUNITY:
-  select communities.name, income.value
-  from (income join household on income.serialNo = household.serialNo) join communities on 
-    household.isWithin = communities.communityID
-  where income.year = y and household.year = y and communities.year = y and communities.name = x;
+select communities.name, Avg(isum)
+from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
+  join communities on (household.PUMA = communities.communityID and household.year = communities.year)
+  where income.year = 2015 and communities.name = 'South Rhode Island--Washington County'
+  group by communities.name, household.serialNo), communities
+where communities.name = 'South Rhode Island--Washington County' and communities.year = 2015
+group by communities.name;
   
 IF STATE:
-  select states.name, income.value
-  from ((income join household on income.serialNo = household.serialNo) join communities on 
-    household.isWithin = communities.communityID) join states on communities.belongsTo = states.stateID
-  where income.year = y and household.year = y and communities.year = y and states.year = y
-    and states.name = x;
+select states.name, Avg(isum)
+from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
+  join communities on (household.PUMA = communities.communityID and household.year = communities.year)
+  join states on (communities.belongsTo = states.stateID and communities.year = states.year)
+where income.year = 2015 and states.name = 'Rhode Island'
+group by states.name, household.serialNo), states
+where states.name = 'Rhode Island' and states.year = 2015
+group by states.name;
+
 
 3. Industry Growth vs Migration
 IF COMMUNITY:
