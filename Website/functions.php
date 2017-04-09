@@ -16,14 +16,17 @@
     //Results stored in $data
     $data = '';
 
+    //Queries stored in $q
+    $q = '';
+
     //Fill in 'Area' dropdown based on Area Type
     if($check == 'areatype') {
         //$var1 is the name of the state we are using
-        $var = "SELECT distinct communities.name 
-                                    FROM Communities, States 
-                                    WHERE communities.belongsTo = states.stateid 
-                                        AND states.name = '" . $var1 . "'";
-       $stid = oci_parse($conn, $var); //. $var1);
+        $q = "SELECT distinct communities.name 
+                FROM Communities, States 
+                WHERE communities.belongsTo = states.stateid 
+                    AND states.name = '" . $var1 . "'";
+        $stid = oci_parse($conn, $q); //. $var1);
         oci_define_by_name($stid, 'NAME', $name);
         oci_execute($stid);
 
@@ -40,56 +43,74 @@
         //$var4 is the year we're looking at
         if($var1 == 'Age') {
             //ADD DIFFERENT QUERY
-            $ageName = 'agep';
-            $stid = oci_parse($conn, "SELECT  median(agep) from Person");
+            $q = "SELECT median(person.agep) 
+                    FROM Person, Communities 
+                    WHERE communities.name = '" . $var3 . 
+                    "' AND communities.year = '" . $var4 . "'";
+            $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Fertility Rate') {
             //ADD DIFFERENT QUERY
-            $stid = oci_parse($conn, 'SELECT distinct name FROM Communities');
+            $q = "SELECT distinct name 
+                    FROM '" . $var2;
+            $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Income') {
-            //ADD DIFFERENT QUERY
-            $stid = oci_parse($conn, 'SELECT distinct name FROM Communities');
+            $q = "SELECT distinct name 
+                    FROM '" . $var2;
+            $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Industry') {
             //ADD DIFFERENT QUERY
-            $stid = oci_parse($conn, 'SELECT distinct name FROM Communities');
+            $q = "SELECT distinct name 
+                    FROM '" . $var2;
+            $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Mobility Status') {
             //ADD DIFFERENT QUERY
-            $stid = oci_parse($conn, 'SELECT distinct name FROM Communities');
+            $q = "SELECT distinct name 
+                    FROM '" . $var2;
+            $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Poverty Rate') {
             //ADD DIFFERENT QUERY
-            $stid = oci_parse($conn, 'SELECT distinct name FROM Communities');
+            $q = "SELECT distinct name 
+                    FROM '" . $var2;
+            $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Primary Language') {
             //ADD DIFFERENT QUERY
-            $stid = oci_parse($conn, 'SELECT distinct name FROM Communities');
+            $q = "SELECT distinct name 
+                    FROM " . $var2;
+            $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Property Value') {
             //ADD DIFFERENT QUERY
-            $stid = oci_parse($conn, 'SELECT distinct name FROM Communities');
+            $q = "SELECT distinct name 
+                    FROM '" . $var2;
+            $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Race') {
             //ADD DIFFERENT QUERY
-            $stid = oci_parse($conn, 'SELECT distinct name FROM Communities');
+            $q = "SELECT distinct name 
+                    FROM '" . $var2;
+            $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
@@ -104,9 +125,11 @@
         //$var2 is the second area to compare
         //$var3 is the first data series to compare
         //$var4 is the second data series to compare
-         $stid = oci_parse($conn, 'SELECT distinct name FROM ' . $var1);
-        oci_define_by_name($stid, 'NAME', $name);
-        oci_execute($stid);
+        $q = "SELECT distinct name 
+                    FROM States";
+            $stid = oci_parse($conn, $q);  
+            oci_define_by_name($stid, 'NAME', $name);
+            oci_execute($stid);
 
         while(oci_fetch($stid)) {
             $data = $name;

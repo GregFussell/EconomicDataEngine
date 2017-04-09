@@ -141,35 +141,43 @@ $(document).on('click', '.compare', function() {
     }
     else {
         var checked = 0;
-        var area1, area2, first, second = '';
+        var secondchecked = 0;
+        var thirdchecked = 0;
+        var col = 0;
+        var area1, area2, first, second, ds1, ds2;
 
         $('table').find($('#comparecheck:checked').parents('tr').children('td')).each(function() {
-            if($(this).text() && (checked == 0 || checked == 1)) {
-                checked += 1; //Skip remove series and correlation
-            }
-            else if($(this).text() && checked == 2) {
-                area1 = $(this).text(); //Get area1
-                checked += 1;
-            }
-            else if($(this).text() && checked == 3) {
-                area2 = $(this).text(); //Get area2
-                checked += 1;
-            }
-            else if($(this).text() && checked == 4) {
-                first = $(this).text(); //Get first data series value
-                checked += 1;
-            }
-            else if($(this).text() && checked == 5) {
-                second = $(this).text(); //Get second data series value
-                checked += 1;
+            var t = $(this).text();
+            if(t) {
+                if((t != 'Remove Series') && (t != 'N/A')) {
+                    if(checked == 0 || checked == 2) {
+                        if(secondchecked == 0) {
+                            area1 = t; //First area to compare
+                        }   
+                        else if(secondchecked == 1) {
+                            area2 = t; //Second area to compare
+                        }
+                        secondchecked += 1;  
+                    }
+                    if(checked == 1 || checked == 3) {
+                        if(thirdchecked == 0) {
+                            first = t; //First data series to compare
+                            col = $(this).index() + 1;
+                            ds1 = $('table th:nth-child(' + col + ')').text();
+                            console.log(ds1);
+                        }   
+                        else if(thirdchecked == 1) {
+                            second = t; //Second data series to compare
+                            col = $(this).index() + 1;
+                            ds2 = $('table th:nth-child(' + col + ')').text();
+                            console.log(ds2);
+                        }
+                        thirdchecked += 1;
+                    }
+                    checked += 1;
+                }
             }
         });
-
-        console.log("Area1: " + area1);
-        console.log("Area2: " + area2);
-        console.log("First data series: " + first);
-        console.log("Second data series: " + second);
-
 
         $.get("functions.php", 
             { 'check': 'compare',
@@ -184,43 +192,32 @@ $(document).on('click', '.compare', function() {
             "text"
         );
 
-        var markup = '<tr><td><input type="checkbox" id="comparecheck"></td>';
+        var markup = '<tr><td></td>';
         markup += "<td><button class = \"remove\">Remove Series</button></td>";
         markup += "<td>" + temp + "</td>"; //Correlation
         markup += "<td>" + area1 + "</td>"; //Area 1
         markup += "<td>" + area2 + "</td>"; //Area 2
-        for(i = 0; i < count; i++) {
+
+        for(i = 0; i < count; i++) { //Fill table
             markup += "<td></td>";
         }
         $('table').append(markup);
 
         var colcount = 1;
         $('table').find('th').each(function() {
-            if($(this).text() == "Age") { //CHANGE TO CHECK REAL HEADER NAME
+            if($(this).text() == ds1) { //CHANGE TO CHECK REAL HEADER NAME
                 $('table').find('tr:last-child').each(function() {
                     $(this).find('td:nth-child(' + colcount +')').text(first);
                 });
             }
-            else if($(this).text() == "Fertility Rate") { //CHANGE TO CHECK REAL HEADER NAME
+            else if($(this).text() == ds2) { //CHANGE TO CHECK REAL HEADER NAME
                 $('table').find('tr:last-child').each(function() {
                     $(this).find('td:nth-child(' + colcount +')').text(second);
                 });
             }
             colcount += 1;            
         }); 
-
     }
-    // var ds2 = $('#dataseries2button').text();
-    // var corr = $('#correlationbutton').text();
-
-    // //Alert if fields need to be completed
-    // if(ds2.search('Data Series') != -1 || corr.search('Correlation') != -1) {
-    //     alert('Cannot compare series - fill in all menus');
-    // }
-    // else {
-    //     console.log("comparing");
-    // }
-
 });
 
 //-------------------REMOVE BUTTON----------------
