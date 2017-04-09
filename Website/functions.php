@@ -44,6 +44,7 @@
         //$var1 is the data series
         //$var2 is area type (state or community)
         //$var3 is the specific state or community 
+        //$var4 is the year we're looking at
         if($var1 == 'Age') {
             //ADD DIFFERENT QUERY
             $stid = oci_parse($conn, 'SELECT distinct name from States');

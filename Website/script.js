@@ -33,9 +33,7 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
             
             $.get("functions.php", 
                 { 'check': 'areatype',
-                    'var1': $(this).text(),
-                    'var2': '',
-                    'var3': ''
+                    'var1': $(this).text()
                 },
                 function(data) { 
                     $('#arealist').append(data); 
@@ -48,9 +46,7 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
 
             $.get("functions.php", 
                 { 'check': 'areatype',
-                    'var1': $(this).text(),
-                    'var2': '',
-                    'var3': ''
+                    'var1': $(this).text()
                 },
                 function(data) { 
                     $('#arealist').append(data); 
@@ -92,7 +88,7 @@ $(document).on('click', '.add', function() {
     if(ds1.search('Data Series') != -1 || 
         year.search('Year') != -1 ||
         areatype.search('Area Type') != -1 || 
-        area.search('Area') == 1) {
+        area.search('Area') != 1) {
             alert('Cannot add series - fill in all menus');
     }
     else {
@@ -136,7 +132,8 @@ $(document).on('click', '.add', function() {
             { 'check': 'add',
                 'var1': ds1,
                 'var2': areatype,
-                'var3': area
+                'var3': area,
+                'var4': year
             },
             function(data) { 
                 temp = data; 
