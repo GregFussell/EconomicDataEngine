@@ -18,27 +18,19 @@
 
     //Fill in 'Area' dropdown based on Area Type
     if($check == 'areatype') {
-        //$var1 is the area type (state or community)
-        if($var1 == "States") { //GET STATES
-            $stid = oci_parse($conn, 'SELECT distinct name FROM States');
-            oci_define_by_name($stid, 'NAME', $name);
-            oci_execute($stid);
+        //$var1 is the name of the state we are using
+        $stid = oci_parse($conn, 'SELECT distinct communities.name 
+                                    FROM Communities, States 
+                                    WHERE communities.belongsTo = states.stateid 
+                                        AND states.name = ' . $var1);
+        oci_define_by_name($stid, 'NAME', $name);
+        oci_execute($stid);
 
-            while(oci_fetch($stid)) {
-                $data = $data . '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $name . '</a></li>';
-            }
-            echo $data;
+        $data = '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $var1 . '</a></li>';
+        while(oci_fetch($stid)) {
+            $data = $data . '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $name . '</a></li>';
         }
-        else if($var1 == "Communities") { //GET COMMUNITIES
-            $stid = oci_parse($conn, 'SELECT distinct name FROM ' . $var1);
-            oci_define_by_name($stid, 'NAME', $name);
-            oci_execute($stid);
-
-            while(oci_fetch($stid)) {
-                $data = $data . '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $name . '</a></li>';
-            }
-            echo $data;
-        }     
+        echo $data; 
     } //Add Data when "Add Series" is selected
     else if($check == 'add') { 
         //$var1 is the data series

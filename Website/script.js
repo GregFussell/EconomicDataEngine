@@ -26,33 +26,18 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
     	$(areatypeselector).removeClass('active');
    		$(this).addClass('active');
 
-        //Put in state names if "State" is selected from Area Type
-        if($(this).text() == "States") {
-            $('#arealist li').remove();
-            
-            $.get("functions.php", 
-                { 'check': 'areatype',
-                    'var1': $(this).text()
-                },
-                function(data) { 
-                    $('#arealist').append(data); 
-                }, 
-                "text"
-            );
-        } //Put in community names if "Community" is selected from Area Type
-        else if($(this).text() == "Communities") {
-            $('#arealist li').remove();
-
-            $.get("functions.php", 
-                { 'check': 'areatype',
-                    'var1': $(this).text()
-                },
-                function(data) { 
-                    $('#arealist').append(data); 
-                }, 
-                "text"
-            );
-        }
+        //Fix area list
+        $('#arealist li').remove();
+        
+        $.get("functions.php", 
+            { 'check': 'areatype',
+                'var1': $(this).text(),
+            },
+            function(data) { 
+                $('#arealist').append(data); 
+            }, 
+            "text"
+        );
     }
 
     if(target.parents('#area').length) {
@@ -60,18 +45,6 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
     	$(areaselector).removeClass('active');
    		$(this).addClass('active');
     }
-
-    // if(target.parents('#dataseries2').length) {
-    //     $('#dataseries2button').text($(this).text());
-    //     $(ds2selector).removeClass('active');
-    //     $(this).addClass('active');
-    // }
-
-    // if(target.parents('#correlation').length) {
-    //     $('#correlationbutton').text($(this).text());
-    //     $(corrselector).removeClass('active');
-    //     $(this).addClass('active');
-    // }
 });
 
 //-------------------ADD BUTTON----------------------
@@ -79,14 +52,14 @@ var count = 0;
 
 $(document).on('click', '.add', function() {
     var ds1 = $('#dataseries1button').text();
+    var year = $('#yearbutton').text();
     var areatype = $('#areatypebutton').text();
     var area = $('#areabutton').text();
-    var year = $('#yearbutton').text();
 
     //Alert if fields need to be completed
     if(ds1.search('Data Series') != -1 || 
         year.search('Year') != -1 ||
-        areatype.search('Area Type') != -1 || 
+        areatype.search('States') != -1 || 
         area.search('Area') != -1) {
             alert('Cannot add series - fill in all menus');
     }
