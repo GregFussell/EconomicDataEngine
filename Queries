@@ -4,17 +4,19 @@ y= year
 
 1. Fertility Rates
 IF COMMUNITY:
-  select communities.name, Avg(household.NOC)
-  from household join communities on (PUMA = communityID and communities.year = household.year)
-  where communities.name = 'South Rhode Island--Washington County' and household.year = 2012
-  group by communities.name;
+select communities.name, sum(household.NOC)/(Count(*) / 2)
+from person join household on (person.serialNo = household.serialNo and person.year = household.year)
+  join communities on (PUMA = communityID and communities.year = household.year)
+where communities.name = 'South Rhode Island--Washington County' and household.year = 2012
+group by communities.name;
 
 IF STATE:
-  select states.name, Avg(household.NOC)
-  from (household join communities on (PUMA = communityID and communities.year = household.year))
-    join states on (communities.BELONGSTO = states.stateID and communities.year = states.year)
-  where states.name = 'Rhode Island' and household.year = 2012
-  group by states.name;
+select states.name, sum(household.NOC)/(Count(*) / 2)
+from person join household on (person.serialNo = household.serialNo and person.year = household.year)
+  join communities on (PUMA = communityID and communities.year = household.year)
+  join states on (communities.BELONGSTO = states.stateID and communities.year = states.year)
+where states.name = 'Rhode Island' and household.year = 2012
+group by states.name;
  
  4. Median Age vs. Property Value
  IF COMMUNITY:
