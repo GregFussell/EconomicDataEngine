@@ -88,7 +88,7 @@ $(document).on('click', '.add', function() {
     if(ds1.search('Data Series') != -1 || 
         year.search('Year') != -1 ||
         areatype.search('Area Type') != -1 || 
-        area.search('Area') != 1) {
+        area.search('Area') != -1) {
             alert('Cannot add series - fill in all menus');
     }
     else {

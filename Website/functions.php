@@ -20,7 +20,7 @@
     if($check == 'areatype') {
         //$var1 is the area type (state or community)
         if($var1 == "States") { //GET STATES
-            $stid = oci_parse($conn, 'SELECT distinct name FROM ' . $var1);
+            $stid = oci_parse($conn, 'SELECT distinct name FROM States');
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
 
@@ -47,7 +47,8 @@
         //$var4 is the year we're looking at
         if($var1 == 'Age') {
             //ADD DIFFERENT QUERY
-            $stid = oci_parse($conn, 'SELECT distinct name from States');
+            $ageName = 'agep';
+            $stid = oci_parse($conn, 'SELECT  median(agep) from Person');
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
