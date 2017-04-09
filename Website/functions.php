@@ -19,14 +19,15 @@
     //Fill in 'Area' dropdown based on Area Type
     if($check == 'areatype') {
         //$var1 is the name of the state we are using
-        $stid = oci_parse($conn, 'SELECT distinct communities.name 
+        $var = "SELECT distinct communities.name 
                                     FROM Communities, States 
                                     WHERE communities.belongsTo = states.stateid 
-                                        AND states.name = ' . $var1);
+                                        AND states.name = '" . $var1 . "'";
+       $stid = oci_parse($conn, $var); //. $var1);
         oci_define_by_name($stid, 'NAME', $name);
         oci_execute($stid);
 
-        $data = '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $var1 . '</a></li>';
+        $data = '<li role="presentation"><a role="menuitem" tabindex="-1" href="#"><b>' . $var1 . '</b></a></li>';
         while(oci_fetch($stid)) {
             $data = $data . '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $name . '</a></li>';
         }
@@ -40,7 +41,7 @@
         if($var1 == 'Age') {
             //ADD DIFFERENT QUERY
             $ageName = 'agep';
-            $stid = oci_parse($conn, 'SELECT  median(agep) from Person');
+            $stid = oci_parse($conn, "SELECT  median(agep) from Person");
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
