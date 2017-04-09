@@ -26,6 +26,9 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
     	$(areatypeselector).removeClass('active');
    		$(this).addClass('active');
 
+        //Reset Area Button
+        $('#areabutton').text('Area');
+
         //Fix area list
         $('#arealist li').remove();
         
@@ -60,7 +63,7 @@ $(document).on('click', '.add', function() {
     if(ds1.search('Data Series') != -1 || 
         year.search('Year') != -1 ||
         areatype.search('States') != -1 || 
-        area.search('Area') != -1) {
+        area.search('Area') == -1) {
             alert('Cannot add series - fill in all menus');
     }
     else {
@@ -92,7 +95,7 @@ $(document).on('click', '.add', function() {
         var markup = '<tr><td><input type="checkbox" id="comparecheck"></td>';
         markup += "<td><button class = \"remove\">Remove Series</button></td>";
         markup += "<td>N/A</td>"; //Correlation
-        markup += "<td>" + area + "</td>"; //Area 1
+        markup += "<td>" + area + " " + year + "</td>"; //Area 1
         markup += "<td>N/A</td>"; //Area 2
         for(i = 0; i < count; i++) {
             markup += "<td></td>";
