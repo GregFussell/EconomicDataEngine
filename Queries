@@ -24,10 +24,10 @@ from person join household on (person.serialNo = household.serialNo and  person.
 where communities.name = x and person.year = y
 group by communities.name;
     
-  select name, Avg(propertyValue)
-  from communities, household
-  where communities.name = x and household.isWithin = (select communityID from communities
-    where communities.name = x) and communities.year = y and household.year = y;
+select communities.name, Avg(coalesce(household.VALP, 0))
+from household join communities on (PUMA = communityID and communities.year = household.year)
+where communities.name = 'South Rhode Island--Washington County' and household.year = 2012 and household.NP != 0
+group by communities.name;
 
 IF STATE:
 select states.name, Median(person.Agep)
