@@ -1,5 +1,4 @@
 var temp;
-var temp2 = '';
 //------------------DROPDOWN OPTIONS---------------------
 var ds1selector = '.dropdown#dataseries1 ul li';
 var yearselector = '.dropdown#year ul li';
@@ -111,14 +110,13 @@ $(document).on('click', '.add', function() {
                 'var3': area,
                 'var4': year
             },
-            function(data) {
-                while(temp2 == data) {
-                    if(temp == data) {
-                        break;
-                    }
+            function getquery(data) {
+                if(!data) {
+                    getquery(data);
                 }
-                temp = data; 
-                temp2 = data;
+                else {
+                    temp = data; 
+                }
             }, 
             "text"
         );
