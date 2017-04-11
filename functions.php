@@ -41,8 +41,8 @@
         //$var2 is area type (state or community)
         //$var3 is the specific state or community 
         //$var4 is the year we're looking at
-        if($var1 == 'Age') {
-            // Change age to median age
+        if($var1 == 'Median Age') {
+            //ADD DIFFERENT QUERY
             $q = "select Median(person.Agep)
                     from person join household on (person.serialNo = household.serialNo and  person.year = household.year)
                     join communities on (PUMA = communityID and communities.year = household.year)
@@ -61,13 +61,26 @@
             oci_define_by_name($stid, 'SUM(HOUSEHOLD.NOC)/(COUNT(*)/2)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Income') {
+        else if($var1 == 'Median Income') {
             // Actually economic growth = Avg income MEDIAN INCOME query not working
-            $q = "select communities.name, Median(isum)
+            $q = "select Avg(isum)
                     from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
                     join communities on (household.PUMA = communities.communityID and household.year = communities.year)
-                    where income.year = 2015 and communities.name = '" . $var3 . "' group by communities.name, household.serialNo), communities
-                    where communities.name = '" . $var3 . "' and communities.year = " . $var4 . " group by communities.name";
+                    where income.year = " . $var4 . " and communities.name = '" . $var3 . "' 
+                    group by communities.name, household.serialNo), communities
+                    where communities.name = '" . $var3 ."' and communities.year = " . $var4 . " group by communities.name";
+            $stid = oci_parse($conn, $q);
+            oci_define_by_name($stid, 'AVG(ISUM)', $name);
+            oci_execute($stid);
+        }
+        else if($var1 == 'Average Income') {
+            // Change to average 
+            $q = "select Avg(isum)
+                    from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
+                    join communities on (household.PUMA = communities.communityID and household.year = communities.year)
+                    where income.year = " . $var4 . " and communities.name = '" . $var3 . "' 
+                    group by communities.name, household.serialNo), communities
+                    where communities.name = '" . $var3 ."' and communities.year = " . $var4 . " group by communities.name";
             $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'AVG(ISUM)', $name);
             oci_execute($stid);
@@ -80,7 +93,7 @@
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Mobility Status') {
+        else if($var1 == 'Percentage of Migrants') {
             // actually number of migrants
             $q = "select Count(mig)
                     from (person join household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on 
@@ -99,7 +112,7 @@
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Primary Language') {
+        else if($var1 == 'Number of Languages') {
             // Actually number of languages...I think. Maybe should be most widely spoken language?
             $q = "select Count(distinct person.LANP)
                     from person join HOUSEHOLD on (person.serialNo = household.serialNo and person.year = household.year)
@@ -116,14 +129,6 @@
                     where communities.name = '" . $var3 . "' and household.year = " . $var4 . " and household.NP != 0 group by communities.name";
             $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'AVG(COALESCE(HOUSEHOLD.VALP,0))', $name);
-            oci_execute($stid);
-        }
-        else if($var1 == 'Race') {
-            // Maybe remove entirely, I dunno. No race queries.
-            $q = "SELECT distinct name 
-                    FROM '" . $var2;
-            $stid = oci_parse($conn, $q);  
-            oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
         
