@@ -189,3 +189,14 @@ where income.year = 2015 and states.name = 'Rhode Island'
 group by states.name, household.serialNo), states
 where states.name = 'Rhode Island' and states.year = 2015
 group by states.name;
+
+EDITED INDUSTRY GROWTH
+select i1.name, INDUSTRY.name, i2.y - i1.x
+from (select communities.name, industry.industryid, COUNT(industryid) x from industry join person on (industry.industryID = person.NAICSP) join
+   household on (person.serialNo = household.serialNo and person.year = household.year) join communities on (household.PUMA =
+   communities.communityID and household.year = communities.year) where communities.name = 'Lake County (North)' and person.year = 2012 group by communities.name, industry.INDUSTRYID)  i1,
+   (select communities.name, industry.industryid,COUNT(industryID) y from (industry join person on (industry.industryID = person.NAICSP ) join
+   household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on (household.PUMA =
+   communities.communityID and household.year = communities.year) where communities.name = 'Lake County (North)' and person.year = 2013 group by communities.name, industry.INDUSTRYID)  i2,
+   industry
+  where i1.industryID = i2.industryID and industry.industryid = i1.industryid;
