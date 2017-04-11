@@ -42,27 +42,37 @@
         //$var3 is the specific state or community 
         //$var4 is the year we're looking at
         if($var1 == 'Median Age') {
-            //ADD DIFFERENT QUERY
-            $q = "select Median(person.Agep)
+            $q = "";
+            if($var3 == 'Florida') {
+                $q = "";
+            }
+            else {
+                 $q = "select Median(person.Agep)
                     from person join household on (person.serialNo = household.serialNo and  person.year = household.year)
                     join communities on (PUMA = communityID and communities.year = household.year)
                     where communities.name = '" . $var3 . "' and person.year = " . $var4 . " group by communities.name";
+            }
+           
             $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'MEDIAN(PERSON.AGEP)', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Fertility Rate') {
-            //ADD DIFFERENT QUERY
-            $q = "select sum(household.NOC)/(Count(*) / 2)
+            $q = "";
+            if($var3 == 'Florida') {
+
+            }
+            else {
+                 $q = "select sum(household.NOC)/(Count(*) / 2)
                     from person join household on (person.serialNo = household.serialNo and person.year = household.year)
                     join communities on (PUMA = communityID and communities.year = household.year)
                     where communities.name = '" . $var3 . "' and household.year = '" . $var4 . "' group by communities.name";
+            }
             $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'SUM(HOUSEHOLD.NOC)/(COUNT(*)/2)', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Median Income') {
-            // Actually economic growth = Avg income MEDIAN INCOME query not working
             $q = "SELECT Median(isum)
                     from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
                     join communities on (household.PUMA = communities.communityID and household.year = communities.year)

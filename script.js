@@ -110,13 +110,13 @@ $(document).on('click', '.add', function() {
                 'var3': area,
                 'var4': year
             },
-            function getquery(data) {
-                if(!data) {
-                    getquery(data);
-                }
-                else {
+            function(data) {
+                // if(!data) {
+                //     getquery(data);
+                // }
+                // else {
                     temp = data; 
-                }
+                //}
             }, 
             "text"
         );
