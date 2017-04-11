@@ -1,4 +1,5 @@
 var temp;
+var temp2 = '';
 //------------------DROPDOWN OPTIONS---------------------
 var ds1selector = '.dropdown#dataseries1 ul li';
 var yearselector = '.dropdown#year ul li';
@@ -111,8 +112,13 @@ $(document).on('click', '.add', function() {
                 'var4': year
             },
             function(data) {
-                console.log(data); 
+                while(temp2 == data) {
+                    if(temp == data) {
+                        break;
+                    }
+                }
                 temp = data; 
+                temp2 = data;
             }, 
             "text"
         );
