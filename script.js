@@ -68,41 +68,6 @@ $(document).on('click', '.add', function() {
             alert('Cannot add series - fill in all menus');
     }
     else {
-        if(!$('table').html() || ($('table').html() == '<tr></tr>')) { //Add columns if there are none
-            var col = "<tr><th><button class = \"compare\">Compare Series</button></th>";
-            col += "<th>Remove</th>";
-            col += "<th>Correlation</th>";
-            col += "<th>Area 1</th>";
-            col += "<th>Area 2</th>";
-            col += "<th>" + ds1 + "</th></tr>";
-            count += 1;
-            $('table').append(col);
-        }
-        else {
-            if($('th').text().search(ds1) == -1) {
-                //add new column name
-                $('table').find('tr:first-child th:last-child').after('<th>' + ds1 + '</th>');
-
-                //add the new column
-                $('table').find('tr').each(function() {
-                    $(this).find('td:last-child').after('<td></td>');
-                });
-
-                count += 1;
-            }
-        }
-
-        //Add empty rows
-        var markup = '<tr><td><input type="checkbox" id="comparecheck"></td>';
-        markup += "<td><button class = \"remove\">Remove Series</button></td>";
-        markup += "<td>N/A</td>"; //Correlation
-        markup += "<td>" + area + " " + year + "</td>"; //Area 1
-        markup += "<td>N/A</td>"; //Area 2
-        for(i = 0; i < count; i++) {
-            markup += "<td></td>";
-        }
-        $('table').append(markup);
-
         //Get query results for data series 1
         $.get("functions.php", 
             { 'check': 'add',
@@ -113,11 +78,47 @@ $(document).on('click', '.add', function() {
             },
             function(data) {
                 temp = data; 
+                console.log(temp);
             }, 
             "text"
         );
 
-        if(temp || (temp2 != temp)) {
+        setTimeout(function() {
+            if(!$('table').html() || ($('table').html() == '<tr></tr>')) { //Add columns if there are none
+                var col = "<tr><th><button class = \"compare\">Compare Series</button></th>";
+                col += "<th>Remove</th>";
+                col += "<th>Correlation</th>";
+                col += "<th>Area 1</th>";
+                col += "<th>Area 2</th>";
+                col += "<th>" + ds1 + "</th></tr>";
+                count += 1;
+                $('table').append(col);
+            }
+            else {
+                if($('th').text().search(ds1) == -1) {
+                    //add new column name
+                    $('table').find('tr:first-child th:last-child').after('<th>' + ds1 + '</th>');
+
+                    //add the new column
+                    $('table').find('tr').each(function() {
+                        $(this).find('td:last-child').after('<td></td>');
+                    });
+
+                    count += 1;
+                }
+            }
+
+            //Add empty rows
+            var markup = '<tr><td><input type="checkbox" id="comparecheck"></td>';
+            markup += "<td><button class = \"remove\">Remove Series</button></td>";
+            markup += "<td>N/A</td>"; //Correlation
+            markup += "<td>" + area + " " + year + "</td>"; //Area 1
+            markup += "<td>N/A</td>"; //Area 2
+            for(i = 0; i < count; i++) {
+                markup += "<td></td>";
+            }
+            $('table').append(markup);
+
             //Put data in the table
             var colcount = 1;
             $('table').find('th').each(function() {
@@ -129,7 +130,7 @@ $(document).on('click', '.add', function() {
                 colcount += 1;            
             }); 
             temp2 = temp;
-        }
+        }, 5000);
     }
 });
 
