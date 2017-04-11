@@ -1,6 +1,7 @@
-var temp;
-var temp2 = 'hello';
-var t0, t1;
+$(document).ready(function() {
+    $('.loader').hide();
+});
+
 //------------------DROPDOWN OPTIONS---------------------
 var ds1selector = '.dropdown#dataseries1 ul li';
 var yearselector = '.dropdown#year ul li';
@@ -54,7 +55,58 @@ $(document).on('click', '.dropdown ul li', function(event) { //make selected opt
 
 //-------------------ADD BUTTON----------------------
 var count = 0;
+var temp;
 
+//Function used to add the data to the table
+function adddata(ds1, year, areatype, area, temp) {
+    if(!$('table').html() || ($('table').html() == '<tr></tr>')) { //Add columns if there are none
+            var col = "<tr><th><button class = \"compare\">Compare Series</button></th>";
+            col += "<th>Remove</th>";
+            col += "<th>Correlation</th>";
+            col += "<th>Area 1</th>";
+            col += "<th>Area 2</th>";
+            col += "<th>" + ds1 + "</th></tr>";
+            count += 1;
+            $('table').append(col);
+        }
+    else {
+        if($('th').text().search(ds1) == -1) {
+            //add new column name
+            $('table').find('tr:first-child th:last-child').after('<th>' + ds1 + '</th>');
+
+            //add the new column
+            $('table').find('tr').each(function() {
+                $(this).find('td:last-child').after('<td></td>');
+            });
+
+            count += 1;
+        }
+    }
+
+    //Add empty rows
+    var markup = '<tr><td><input type="checkbox" id="comparecheck"></td>';
+    markup += "<td><button class = \"remove\">Remove Series</button></td>";
+    markup += "<td>N/A</td>"; //Correlation
+    markup += "<td>" + area + " " + year + "</td>"; //Area 1
+    markup += "<td>N/A</td>"; //Area 2
+    for(i = 0; i < count; i++) {
+        markup += "<td></td>";
+    }
+    $('table').append(markup);
+
+    //Put data in the table
+    var colcount = 1;
+    $('table').find('th').each(function() {
+        if($(this).text() == ds1) {
+            $('table').find('tr:last-child').each(function() {
+                $(this).find('td:nth-child(' + colcount +')').text(temp);
+            });
+        }
+        colcount += 1;            
+    }); 
+}
+
+//Add data when the button is clicked
 $(document).on('click', '.add', function() {
     var ds1 = $('#dataseries1button').text();
     var year = $('#yearbutton').text();
@@ -69,83 +121,52 @@ $(document).on('click', '.add', function() {
             alert('Cannot add series - fill in all menus');
     }
     else {
-        //t0 = performance.now();
-        
         //Get query results for data series 1
-     //do { 
-            $.get("functions.php", 
-                { 'check': 'add',
-                    'var1': ds1,
-                    'var2': areatype,
-                    'var3': area,
-                    'var4': year
-                },
-                function(data) {
-                    temp = data; 
-                    temp2 = 'not hello';
-                }, 
-                "text"
-            );
-            // console.log(temp);
-            // console.log(temp2);
-      // } while(temp2 == 'hello');
+        $.get("functions.php", 
+            { 'check': 'add',
+                'var1': ds1,
+                'var2': areatype,
+                'var3': area,
+                'var4': year
+            },
+            function(data) {
+                temp = data; 
+                // clearTimeout(load);
+                // $('#loader').hide();
+            }, 
+            "text"
+        );
 
-        //else t1 = performance.now();
-        //do {
-            // console.log(temp);
-            // console.log(temp2);
-       // } while(temp2 = 'hello');
+        //temp = "hello";
+        adddata(ds1, year, areatype, area, temp);
+        // $('.loader').show();
 
-        //setTimeout(function() {
-            if(!$('table').html() || ($('table').html() == '<tr></tr>')) { //Add columns if there are none
-                var col = "<tr><th><button class = \"compare\">Compare Series</button></th>";
-                col += "<th>Remove</th>";
-                col += "<th>Correlation</th>";
-                col += "<th>Area 1</th>";
-                col += "<th>Area 2</th>";
-                col += "<th>" + ds1 + "</th></tr>";
-                count += 1;
-                $('table').append(col);
-            }
-            else {
-                if($('th').text().search(ds1) == -1) {
-                    //add new column name
-                    $('table').find('tr:first-child th:last-child').after('<th>' + ds1 + '</th>');
+        // var load = setTimeout(function() {
+        //     temp = "Try Again";
+        // }, 8000);
 
-                    //add the new column
-                    $('table').find('tr').each(function() {
-                        $(this).find('td:last-child').after('<td></td>');
-                    });
+        // setTimeout(function() {
+        //     temp = "hello";
+        // }, 1500);
 
-                    count += 1;
-                }
-            }
-
-            //Add empty rows
-            var markup = '<tr><td><input type="checkbox" id="comparecheck"></td>';
-            markup += "<td><button class = \"remove\">Remove Series</button></td>";
-            markup += "<td>N/A</td>"; //Correlation
-            markup += "<td>" + area + " " + year + "</td>"; //Area 1
-            markup += "<td>N/A</td>"; //Area 2
-            for(i = 0; i < count; i++) {
-                markup += "<td></td>";
-            }
-            $('table').append(markup);
-
-            //Put data in the table
-            var colcount = 1;
-            $('table').find('th').each(function() {
-                if($(this).text() == ds1) {
-                    $('table').find('tr:last-child').each(function() {
-                        $(this).find('td:nth-child(' + colcount +')').text(temp);
-                    });
-                }
-                colcount += 1;            
-            }); 
-            temp2 = temp;
-        //}, t1 - t0);
+        // var ch = 0;
+        // while(ch < 8) {
+        //     timeout(load, ds1, year, areatype, area, temp);
+        //     ch = ch + 1;
+        // }
     }
 });
+
+// function timeout(load, ds1, year, areatype, area, temp) {
+//     setTimeout(function() {
+//         if(temp == "hello") {
+//             adddata(ds1, year, areatype, area, temp);
+//             clearTimeout(load);
+//             $('.loader').hide();
+//         }
+//         //timeout(load, ds1, year, areatype, area, temp);
+//     }, 1000);
+// }
 
 //-------------------COMPARE BUTTON----------------
 var checkbox = 2;
@@ -155,6 +176,34 @@ $(document).on('change', '#comparecheck', function() {
        alert("You can only compare 2 data series!");
    }
 });
+
+function comparedata(area1, first, area2, second, ds1, ds2, temp) {
+    var markup = '<tr><td></td>';
+    markup += "<td><button class = \"remove\">Remove Series</button></td>";
+    markup += "<td>" + temp + "</td>"; //Correlation
+    markup += "<td>" + area1 + "</td>"; //Area 1
+    markup += "<td>" + area2 + "</td>"; //Area 2
+
+    for(i = 0; i < count; i++) { //Fill table
+        markup += "<td></td>";
+    }
+    $('table').append(markup);
+
+    var colcount = 1;
+    $('table').find('th').each(function() {
+        if($(this).text() == ds1) { //CHANGE TO CHECK REAL HEADER NAME
+            $('table').find('tr:last-child').each(function() {
+                $(this).find('td:nth-child(' + colcount +')').text(first);
+            });
+        }
+        else if($(this).text() == ds2) { //CHANGE TO CHECK REAL HEADER NAME
+            $('table').find('tr:last-child').each(function() {
+                $(this).find('td:nth-child(' + colcount +')').text(second);
+            });
+        }
+        colcount += 1;            
+    }); 
+}
 
 $(document).on('click', '.compare', function() {
     if($('#comparecheck:checked').length < checkbox) {
@@ -185,13 +234,11 @@ $(document).on('click', '.compare', function() {
                             first = t; //First data series to compare
                             col = $(this).index() + 1;
                             ds1 = $('table th:nth-child(' + col + ')').text();
-                            console.log(ds1);
                         }   
                         else if(thirdchecked == 1) {
                             second = t; //Second data series to compare
                             col = $(this).index() + 1;
                             ds2 = $('table th:nth-child(' + col + ')').text();
-                            console.log(ds2);
                         }
                         thirdchecked += 1;
                     }
@@ -213,31 +260,7 @@ $(document).on('click', '.compare', function() {
             "text"
         );
 
-        var markup = '<tr><td></td>';
-        markup += "<td><button class = \"remove\">Remove Series</button></td>";
-        markup += "<td>" + temp + "</td>"; //Correlation
-        markup += "<td>" + area1 + "</td>"; //Area 1
-        markup += "<td>" + area2 + "</td>"; //Area 2
-
-        for(i = 0; i < count; i++) { //Fill table
-            markup += "<td></td>";
-        }
-        $('table').append(markup);
-
-        var colcount = 1;
-        $('table').find('th').each(function() {
-            if($(this).text() == ds1) { //CHANGE TO CHECK REAL HEADER NAME
-                $('table').find('tr:last-child').each(function() {
-                    $(this).find('td:nth-child(' + colcount +')').text(first);
-                });
-            }
-            else if($(this).text() == ds2) { //CHANGE TO CHECK REAL HEADER NAME
-                $('table').find('tr:last-child').each(function() {
-                    $(this).find('td:nth-child(' + colcount +')').text(second);
-                });
-            }
-            colcount += 1;            
-        }); 
+        comparedata(area1, first, area2, second, ds1, ds2,temp);
     }
 });
 
