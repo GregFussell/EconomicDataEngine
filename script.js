@@ -1,5 +1,5 @@
 var temp;
-var temp2;
+var t0, t1;
 //------------------DROPDOWN OPTIONS---------------------
 var ds1selector = '.dropdown#dataseries1 ul li';
 var yearselector = '.dropdown#year ul li';
@@ -69,6 +69,7 @@ $(document).on('click', '.add', function() {
     }
     else {
         //Get query results for data series 1
+        t0 = performance.now();
         $.get("functions.php", 
             { 'check': 'add',
                 'var1': ds1,
@@ -78,7 +79,7 @@ $(document).on('click', '.add', function() {
             },
             function(data) {
                 temp = data; 
-                console.log(temp);
+                t1 = performance.now();
             }, 
             "text"
         );
@@ -129,8 +130,7 @@ $(document).on('click', '.add', function() {
                 }
                 colcount += 1;            
             }); 
-            temp2 = temp;
-        }, 5000);
+        }, t1 - t0);
     }
 });
 
