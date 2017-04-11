@@ -44,7 +44,11 @@
         if($var1 == 'Median Age') {
             $q = "";
             if($var3 == 'Florida') {
-                $q = "";
+                $q = "select states.name, Median(person.Agep)
+                        from person join household on (person.serialNo = household.serialNo and  person.year = household.year)
+                        join communities on (PUMA = communityID and communities.year = household.year) join states on 
+                        (communities.BELONGSTO = states.stateID and communities.year = states.year)
+                        where states.name = 'Florida' and person.year = " . $var4 . " group by states.name";
             }
             else {
                  $q = "select Median(person.Agep)
@@ -60,7 +64,11 @@
         else if($var1 == 'Fertility Rate') {
             $q = "";
             if($var3 == 'Florida') {
-
+                $q = "select sum(household.NOC)/(Count(*) / 2)
+                        from person join household on (person.serialNo = household.serialNo and person.year = household.year)
+                        join communities on (PUMA = communityID and communities.year = household.year)
+                        join states on (communities.BELONGSTO = states.stateID and communities.year = states.year)
+                        where states.name = 'Florida' and household.year = " . $var4 . " group by states.name";
             }
             else {
                  $q = "select sum(household.NOC)/(Count(*) / 2)
@@ -75,7 +83,13 @@
         else if($var1 == 'Median Income') {
             $q = "";
             if($var3 == 'Florida') {
-
+                $q = "select Median(isum)
+                        from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
+                        join communities on (household.PUMA = communities.communityID and household.year = communities.year)
+                        join states on (communities.belongsTo = states.stateID and communities.year = states.year)
+                        where income.year = " . $var4 . " and states.name = 'Florida'
+                        group by states.name, household.serialNo), states
+                        where states.name = 'Florida' and states.year = " . $var4 . " group by states.name;"
             }
             else {
                 $q = "SELECT Median(isum)
