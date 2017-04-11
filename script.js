@@ -70,24 +70,25 @@ $(document).on('click', '.add', function() {
     }
     else {
         //t0 = performance.now();
-        [lbl] start:
 
         //Get query results for data series 1
-        $.get("functions.php", 
-            { 'check': 'add',
-                'var1': ds1,
-                'var2': areatype,
-                'var3': area,
-                'var4': year
-            },
-            function(data) {
-                temp = data; 
-                temp2 = true;
-            }, 
-            "text"
-        );
+        do { 
+            $.get("functions.php", 
+                { 'check': 'add',
+                    'var1': ds1,
+                    'var2': areatype,
+                    'var3': area,
+                    'var4': year
+                },
+                function(data) {
+                    temp = data; 
+                    temp2 = true;
+                }, 
+                "text"
+            );
+        } while(!temp2);
 
-        if(temp2) goto start;
+        //if(temp2) goto start;
         //else t1 = performance.now();
         temp2 = false;
 
