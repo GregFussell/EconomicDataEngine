@@ -1,4 +1,5 @@
 var temp;
+var temp2;
 //------------------DROPDOWN OPTIONS---------------------
 var ds1selector = '.dropdown#dataseries1 ul li';
 var yearselector = '.dropdown#year ul li';
@@ -110,27 +111,25 @@ $(document).on('click', '.add', function() {
                 'var3': area,
                 'var4': year
             },
-            function getquery(data) {
-                if(!data) {
-                    getquery(data);
-                }
-                else {
-                    temp = data; 
-                }
+            function(data) {
+                temp = data; 
             }, 
             "text"
         );
 
-        //Put data in the table
-        var colcount = 1;
-        $('table').find('th').each(function() {
-            if($(this).text() == ds1) {
-                $('table').find('tr:last-child').each(function() {
-                    $(this).find('td:nth-child(' + colcount +')').text(temp);
-                });
-            }
-            colcount += 1;            
-        }); 
+        if(temp || (temp2 != temp)) {
+            //Put data in the table
+            var colcount = 1;
+            $('table').find('th').each(function() {
+                if($(this).text() == ds1) {
+                    $('table').find('tr:last-child').each(function() {
+                        $(this).find('td:nth-child(' + colcount +')').text(temp);
+                    });
+                }
+                colcount += 1;            
+            }); 
+            temp2 = temp;
+        }
     }
 });
 
