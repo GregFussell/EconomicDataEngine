@@ -1,4 +1,5 @@
 var temp;
+var temp2 = false;
 var t0, t1;
 //------------------DROPDOWN OPTIONS---------------------
 var ds1selector = '.dropdown#dataseries1 ul li';
@@ -68,8 +69,10 @@ $(document).on('click', '.add', function() {
             alert('Cannot add series - fill in all menus');
     }
     else {
+        //t0 = performance.now();
+        [lbl] start:
+
         //Get query results for data series 1
-        t0 = performance.now();
         $.get("functions.php", 
             { 'check': 'add',
                 'var1': ds1,
@@ -79,12 +82,16 @@ $(document).on('click', '.add', function() {
             },
             function(data) {
                 temp = data; 
-                t1 = performance.now();
+                temp2 = true;
             }, 
             "text"
         );
 
-        setTimeout(function() {
+        if(temp2) goto start;
+        //else t1 = performance.now();
+        temp2 = false;
+
+        //setTimeout(function() {
             if(!$('table').html() || ($('table').html() == '<tr></tr>')) { //Add columns if there are none
                 var col = "<tr><th><button class = \"compare\">Compare Series</button></th>";
                 col += "<th>Remove</th>";
@@ -130,7 +137,7 @@ $(document).on('click', '.add', function() {
                 }
                 colcount += 1;            
             }); 
-        }, t1 - t0);
+        //}, t1 - t0);
     }
 });
 
