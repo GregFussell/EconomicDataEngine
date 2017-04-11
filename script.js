@@ -112,11 +112,6 @@ $(document).on('click', '.add', function() {
                 'var4': year
             },
             function(data) {
-                while(temp2 == data) {
-                    if(temp == data) {
-                        break;
-                    }
-                }
                 temp = data; 
                 temp2 = data;
             }, 
