@@ -63,14 +63,13 @@
         }
         else if($var1 == 'Median Income') {
             // Actually economic growth = Avg income MEDIAN INCOME query not working
-            $q = "select Avg(isum)
+            $q = "SELECT Median(isum)
                     from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
                     join communities on (household.PUMA = communities.communityID and household.year = communities.year)
-                    where income.year = " . $var4 . " and communities.name = '" . $var3 . "' 
-                    group by communities.name, household.serialNo), communities
-                    where communities.name = '" . $var3 ."' and communities.year = " . $var4 . " group by communities.name";
+                    where income.year = " . $var4 . " and communities.name = '" . $var3 . "' group by communities.name, household.serialNo), communities
+                    where communities.name = '" . $var3 . "' and communities.year = " . $var4 . " group by communities.name";
             $stid = oci_parse($conn, $q);
-            oci_define_by_name($stid, 'AVG(ISUM)', $name);
+            oci_define_by_name($stid, 'MEDIAN(ISUM)', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Average Income') {
