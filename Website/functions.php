@@ -43,27 +43,34 @@
         //$var4 is the year we're looking at
         if($var1 == 'Age') {
             //ADD DIFFERENT QUERY
-            $q = "SELECT median(person.agep) 
-                    FROM Person, Communities 
-                    WHERE communities.name = '" . $var3 . 
-                    "' AND communities.year = '" . $var4 . "'";
+            $q = "select Median(person.Agep)
+                    from person join household on (person.serialNo = household.serialNo and  person.year = household.year)
+                    join communities on (PUMA = communityID and communities.year = household.year)
+                    where communities.name = '" . $var3 . "' and person.year = " . $var4 . " group by communities.name";
             $stid = oci_parse($conn, $q);
-            oci_define_by_name($stid, 'NAME', $name);
+            oci_define_by_name($stid, 'MEDIAN(PERSON.AGEP)', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Fertility Rate') {
             //ADD DIFFERENT QUERY
-            $q = "SELECT distinct name 
-                    FROM '" . $var2;
+            $q = "select sum(household.NOC)/(Count(*) / 2)
+                    from person join household on (person.serialNo = household.serialNo and person.year = household.year)
+                    join communities on (PUMA = communityID and communities.year = household.year)
+                    where communities.name = '" . $var3 . "' and household.year = '" . $var4 . "' group by communities.name";
             $stid = oci_parse($conn, $q);
-            oci_define_by_name($stid, 'NAME', $name);
+            oci_define_by_name($stid, 'SUM(HOUSEHOLD.NOC)/(COUNT(*)/2)', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Income') {
-            $q = "SELECT distinct name 
-                    FROM '" . $var2;
+            // Actually economic growth = Avg income MEDIAN INCOME query not working
+            $q = "select Avg(isum)
+                    from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
+                    join communities on (household.PUMA = communities.communityID and household.year = communities.year)
+                    where income.year = " . $var4 . " and communities.name = '" . $var3 . "' 
+                    group by communities.name, household.serialNo), communities
+                    where communities.name = '" . $var3 ."' and communities.year = " . $var4 . " group by communities.name";
             $stid = oci_parse($conn, $q);
-            oci_define_by_name($stid, 'NAME', $name);
+            oci_define_by_name($stid, 'AVG(ISUM)', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Industry') {
@@ -75,15 +82,18 @@
             oci_execute($stid);
         }
         else if($var1 == 'Mobility Status') {
-            //ADD DIFFERENT QUERY
-            $q = "SELECT distinct name 
-                    FROM '" . $var2;
+            // actually number of migrants
+            $q = "select Count(mig)
+                    from (person join household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on 
+                    (household.PUMA = communities.communityID and household.year= communities.year)
+                    where communities.name = '" . $var3 . "' and person.year = " . $var4 . " and mig = 2
+                    group by communities.name";
             $stid = oci_parse($conn, $q);  
-            oci_define_by_name($stid, 'NAME', $name);
+            oci_define_by_name($stid, 'COUNT(MIG)', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Poverty Rate') {
-            //ADD DIFFERENT QUERY
+            // Poverty query not working
             $q = "SELECT distinct name 
                     FROM '" . $var2;
             $stid = oci_parse($conn, $q);  
@@ -91,23 +101,26 @@
             oci_execute($stid);
         }
         else if($var1 == 'Primary Language') {
-            //ADD DIFFERENT QUERY
-            $q = "SELECT distinct name 
-                    FROM " . $var2;
+            // Actually number of languages...I think. Maybe should be most widely spoken language?
+            $q = "select Count(distinct person.LANP)
+                    from person join HOUSEHOLD on (person.serialNo = household.serialNo and person.year = household.year)
+                    join communities on (household.PUMA = communities.communityID and household.year = communities.year)
+                    where communities.name = '" . $var3 . "' and person.year = " . $var4 . " group by communities.name";
             $stid = oci_parse($conn, $q);  
-            oci_define_by_name($stid, 'NAME', $name);
+            oci_define_by_name($stid, 'COUNT(DISTINCTPERSON.LANP)', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Property Value') {
             //ADD DIFFERENT QUERY
-            $q = "SELECT distinct name 
-                    FROM '" . $var2;
+            $q = "select Avg(coalesce(household.VALP, 0))
+                    from household join communities on (PUMA = communityID and communities.year = household.year) 
+                    where communities.name = '" . $var3 . "' and household.year = " . $var4 . " and household.NP != 0 group by communities.name";
             $stid = oci_parse($conn, $q);  
-            oci_define_by_name($stid, 'NAME', $name);
+            oci_define_by_name($stid, 'AVG(COALESCE(HOUSEHOLD.VALP,0))', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Race') {
-            //ADD DIFFERENT QUERY
+            // Maybe remove entirely, I dunno. No race queries.
             $q = "SELECT distinct name 
                     FROM '" . $var2;
             $stid = oci_parse($conn, $q);  
@@ -117,6 +130,9 @@
         
         while(oci_fetch($stid)) {
             $data = $name;
+        }
+        if(is_null($data)) {
+            $data = "null";
         }
         echo $data;
     }
