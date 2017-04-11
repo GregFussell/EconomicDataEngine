@@ -70,7 +70,7 @@ $(document).on('click', '.add', function() {
     }
     else {
         //t0 = performance.now();
-        [lbl] start:
+        //start:
 
         //Get query results for data series 1
         $.get("functions.php", 
@@ -87,7 +87,7 @@ $(document).on('click', '.add', function() {
             "text"
         );
 
-        if(temp2) goto start;
+        //if(!temp2) goto start;
         //else t1 = performance.now();
         temp2 = false;
 
