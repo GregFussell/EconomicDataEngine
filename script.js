@@ -1,5 +1,5 @@
 var temp;
-var temp2 = false;
+var temp2 = 'hello';
 var t0, t1;
 //------------------DROPDOWN OPTIONS---------------------
 var ds1selector = '.dropdown#dataseries1 ul li';
@@ -70,9 +70,9 @@ $(document).on('click', '.add', function() {
     }
     else {
         //t0 = performance.now();
-
+        
         //Get query results for data series 1
-        do { 
+     //do { 
             $.get("functions.php", 
                 { 'check': 'add',
                     'var1': ds1,
@@ -82,14 +82,19 @@ $(document).on('click', '.add', function() {
                 },
                 function(data) {
                     temp = data; 
-                    temp2 = true;
+                    temp2 = 'not hello';
                 }, 
                 "text"
             );
-        } while(!temp2);
+            // console.log(temp);
+            // console.log(temp2);
+      // } while(temp2 == 'hello');
 
         //else t1 = performance.now();
-        temp2 = false;
+        //do {
+            // console.log(temp);
+            // console.log(temp2);
+       // } while(temp2 = 'hello');
 
         //setTimeout(function() {
             if(!$('table').html() || ($('table').html() == '<tr></tr>')) { //Add columns if there are none
@@ -137,6 +142,7 @@ $(document).on('click', '.add', function() {
                 }
                 colcount += 1;            
             }); 
+            temp2 = temp;
         //}, t1 - t0);
     }
 });
