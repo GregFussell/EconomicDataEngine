@@ -89,7 +89,7 @@
                         join states on (communities.belongsTo = states.stateID and communities.year = states.year)
                         where income.year = " . $var4 . " and states.name = 'Florida'
                         group by states.name, household.serialNo), states
-                        where states.name = 'Florida' and states.year = " . $var4 . " group by states.name;"
+                        where states.name = 'Florida' and states.year = " . $var4 . " group by states.name";
             }
             else {
                 $q = "SELECT Median(isum)
@@ -106,7 +106,13 @@
         else if($var1 == 'Average Income') {
             $q = "";
             if($var3 == 'Florida') {
-
+                $q = "select states.name, Avg(isum)
+                        from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
+                        join communities on (household.PUMA = communities.communityID and household.year = communities.year)
+                        join states on (communities.belongsTo = states.stateID and communities.year = states.year)
+                        where income.year = " . $var4 . " and states.name = 'Florida'
+                        group by states.name, household.serialNo), states
+                        where states.name = 'Florida' and states.year = " . $var4 . " group by states.name";
             }
             else {
                 $q = "select Avg(isum)
@@ -140,7 +146,12 @@
             // actually number of migrants
             $q = "";
             if($var3 == 'Florida') {
-
+                $q = "select Count(mig)
+                        from ((person join household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on 
+                        (household.PUMA = communities.communityID and household.year= communities.year)) join states on (communities.belongsTo = 
+                        states.stateID and communities.year = states.year)
+                        where states.name = 'Florida' and person.year = " . $var4 . " and mig = 2
+                        group by states.name";
             }
             else {
                 $q = "select Count(mig)
@@ -171,7 +182,11 @@
         else if($var1 == 'Number of Languages') {
             $q = "";
             if($var3 == 'Florida') {
-
+                $q = "select states.name, Count(distinct person.LANP)
+                        from person join HOUSEHOLD on (person.serialNo = household.serialNo and person.year = household.year)
+                        join communities on (household.PUMA = communities.communityID and household.year = communities.year)
+                        join states on (communities.belongsTo = states.stateID and communities.year = states.year)
+                        where states.name = 'Florida' and person.year = " . $var4 . " group by states.name";
             }
             else {
                 $q = "select Count(distinct person.LANP)
