@@ -122,6 +122,12 @@ $(document).on('click', '.add', function() {
     }
     else {
         //Get query results for data series 1
+
+        // $('#loader').show();
+        // var load = setTimeout(function() {
+        //     temp = "Try Again";
+        // }, 8000);
+
         $.get("functions.php", 
             { 'check': 'add',
                 'var1': ds1,
@@ -133,12 +139,13 @@ $(document).on('click', '.add', function() {
                 temp = data; 
                 // clearTimeout(load);
                 // $('#loader').hide();
+                // adddata(ds1, year, areatype, area, temp);
             }, 
             "text"
         );
 
         //temp = "hello";
-        adddata(ds1, year, areatype, area, temp);
+        //adddata(ds1, year, areatype, area, temp);
         // $('.loader').show();
 
         // var load = setTimeout(function() {
