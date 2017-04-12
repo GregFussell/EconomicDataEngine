@@ -225,7 +225,7 @@
             oci_define_by_name($stid, 'AVG(COALESCE(HOUSEHOLD.VALP,0))', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Most Spoken Language') {
+        else if($var1 == 'Most Spoken Foreign Language') {
             $q = "";
             if($var3 == 'Florida') {
                 $q = "select primarylanguage.name

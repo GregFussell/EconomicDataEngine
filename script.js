@@ -104,6 +104,7 @@ function adddata(ds1, year, areatype, area, temp) {
         }
         colcount += 1;            
     }); 
+    $('.loader').hide();
 }
 
 //Add data when the button is clicked
@@ -123,10 +124,10 @@ $(document).on('click', '.add', function() {
     else {
         //Get query results for data series 1
 
-        // $('#loader').show();
-        // var load = setTimeout(function() {
-        //     temp = "Try Again";
-        // }, 8000);
+        $('.loader').show();
+        var load = setTimeout(function() {
+            temp = "Try Again";
+        }, 20000);
 
         $.get("functions.php", 
             { 'check': 'add',
@@ -137,9 +138,8 @@ $(document).on('click', '.add', function() {
             },
             function(data) {
                 temp = data; 
-                // clearTimeout(load);
-                // $('#loader').hide();
-                // adddata(ds1, year, areatype, area, temp);
+                clearTimeout(load);
+                adddata(ds1, year, areatype, area, temp);
             }, 
             "text"
         );
