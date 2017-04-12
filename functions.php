@@ -312,20 +312,119 @@
         //$var2 is the second area to compare
         //$var3 is the first data series to compare
         //$var4 is the second data series to compare
-        $q = "SELECT distinct name 
-                    FROM States";
-            $stid = oci_parse($conn, $q);  
-            oci_define_by_name($stid, 'NAME', $name);
-            oci_execute($stid);
+        $q1 = "";
+        $q2 = "";
+        $q1 = "SELECT agep 
+                    FROM Person";
+        $q2 = "SELECT wagp 
+                    FROM Person"
 
+        $stid = oci_parse($conn, $q1);  
+        oci_define_by_name($stid, 'AGEP', $name);
+        oci_execute($stid);
+
+        $array1 = array();
         while(oci_fetch($stid)) {
-            $data = $name;
+            $array1[] = $name;
         }
+
+        $stid = oci_parse($conn, $q);  
+        oci_define_by_name($stid, 'WAGP', $name);
+        oci_execute($stid);
+
+        $array2 = array();
+        while(oci_fetch($stid)) {
+            $array2[] = $name;
+        }
+
+        $data = Correlation($array1, $array2);
         echo $data;
     }
-
 
     // Close the Oracle connection
     oci_free_statement($stid);
     oci_close($conn);
+
+
+    //CORRELATION FUNCTIONS
+    function Correlation($arr1, $arr2) {        
+        $correlation = 0;
+
+        $k = SumProductMeanDeviation($arr1, $arr2);
+        $ssmd1 = SumSquareMeanDeviation($arr1);
+        $ssmd2 = SumSquareMeanDeviation($arr2);
+
+        $product = $ssmd1 * $ssmd2;
+
+        $res = sqrt($product);
+
+        $correlation = $k / $res;
+
+        return $correlation;
+    }
+
+    function SumProductMeanDeviation($arr1, $arr2) {
+        $sum = 0;
+
+        $num = count($arr1);
+
+        for($i=0; $i<$num; $i++)
+        {
+            $sum = $sum + ProductMeanDeviation($arr1, $arr2, $i);
+        }
+
+        return $sum;
+    }
+
+    function ProductMeanDeviation($arr1, $arr2, $item) {
+        return (MeanDeviation($arr1, $item) * MeanDeviation($arr2, $item));
+    }
+
+    function SumSquareMeanDeviation($arr) {
+        $sum = 0;
+
+        $num = count($arr);
+
+        for($i=0; $i<$num; $i++)
+        {
+            $sum = $sum + SquareMeanDeviation($arr, $i);
+        }
+
+        return $sum;
+    }
+
+    function SquareMeanDeviation($arr, $item) {
+        return MeanDeviation($arr, $item) * MeanDeviation($arr, $item);
+    }
+
+    function SumMeanDeviation($arr) {
+        $sum = 0;
+
+        $num = count($arr);
+
+        for($i=0; $i<$num; $i++)
+        {
+            $sum = $sum + MeanDeviation($arr, $i);
+        }
+
+        return $sum;
+    }
+
+    function MeanDeviation($arr, $item) {
+        $average = Average($arr);
+
+        return $arr[$item] - $average;
+    }    
+
+    function Average($arr) {
+        $sum = Sum($arr);
+        $num = count($arr);
+
+        return $sum/$num;
+    }
+
+    function Sum($arr) {
+        return array_sum($arr);
+    }
+
 ?>

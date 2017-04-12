@@ -148,37 +148,8 @@ $(document).on('click', '.add', function() {
             }, 
             "text"
         );
-
-        //temp = "hello";
-        //adddata(ds1, year, areatype, area, temp);
-        // $('.loader').show();
-
-        // var load = setTimeout(function() {
-        //     temp = "Try Again";
-        // }, 8000);
-
-        // setTimeout(function() {
-        //     temp = "hello";
-        // }, 1500);
-
-        // var ch = 0;
-        // while(ch < 8) {
-        //     timeout(load, ds1, year, areatype, area, temp);
-        //     ch = ch + 1;
-        // }
     }
 });
-
-// function timeout(load, ds1, year, areatype, area, temp) {
-//     setTimeout(function() {
-//         if(temp == "hello") {
-//             adddata(ds1, year, areatype, area, temp);
-//             clearTimeout(load);
-//             $('.loader').hide();
-//         }
-//         //timeout(load, ds1, year, areatype, area, temp);
-//     }, 1000);
-// }
 
 //-------------------COMPARE BUTTON----------------
 var checkbox = 2;
