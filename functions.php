@@ -312,29 +312,36 @@
         //$var2 is the second area to compare
         //$var3 is the first data series to compare
         //$var4 is the second data series to compare
-        $q1 = "";
-        $q2 = "";
-        $q1 = "SELECT agep 
-                    FROM Person";
-        $q2 = "SELECT wagp 
-                    FROM Person"
 
-        $stid = oci_parse($conn, $q1);  
-        oci_define_by_name($stid, 'AGEP', $name);
-        oci_execute($stid);
+        // $q1 = "";
+        // $q2 = "";
+        // $q1 = "SELECT agep              FROM Person";
+        // $q2 = "SELECT wagp             FROM Income";
 
+        // $stid1 = oci_parse($conn, $q1);  
+        // oci_define_by_name($stid1, 'AGEP', $name1);
+        // oci_execute($stid1);
+
+        // $array1 = array();
+        // while(oci_fetch($stid1)) {
+        //     $array1[] = $name1;
+        // }
+
+        // $stid2 = oci_parse($conn, $q2);  
+        // oci_define_by_name($stid2, 'WAGP', $name2);
+        // oci_execute($stid2);
+
+        // $array2 = array();
+        // while(oci_fetch($stid2)) {
+        //     $array2[] = $name2;
+        // }
         $array1 = array();
-        while(oci_fetch($stid)) {
-            $array1[] = $name;
-        }
-
-        $stid = oci_parse($conn, $q);  
-        oci_define_by_name($stid, 'WAGP', $name);
-        oci_execute($stid);
-
         $array2 = array();
-        while(oci_fetch($stid)) {
-            $array2[] = $name;
+
+        $num = 20;
+        for($i = 0; $i < $num; $i++) {
+            $array1[] = rand();
+            $array2[] = rand();
         }
 
         $data = Correlation($array1, $array2);

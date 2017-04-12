@@ -230,6 +230,11 @@ $(document).on('click', '.compare', function() {
             }
         });
 
+        $('.loader').show();
+        var load = setTimeout(function() {
+            temp = "Try Again";
+        }, 20000);
+
         $.get("functions.php", 
             { 'check': 'compare',
                 'var1': area1,
@@ -238,12 +243,15 @@ $(document).on('click', '.compare', function() {
                 'var4': second
             },
             function(data) { 
-                temp = data; 
+                temp = data;
+                clearTimeout(load);
+                comparedata(area1, first, area2, second, ds1, ds2,temp); 
+                $('.loader').hide();
             }, 
             "text"
         );
 
-        comparedata(area1, first, area2, second, ds1, ds2,temp);
+        
     }
 });
 
