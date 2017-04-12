@@ -249,9 +249,7 @@ $(document).on('click', '.compare', function() {
                 $('.loader').hide();
             }, 
             "text"
-        );
-
-        
+        );     
     }
 });
 

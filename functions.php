@@ -18,6 +18,8 @@
 
     //Queries stored in $q
     $q = '';
+    $q1 = "";
+    $q2 = "";
 
     //Fill in 'Area' dropdown based on Area Type
     if($check == 'areatype') {
@@ -313,45 +315,34 @@
         //$var3 is the first data series to compare
         //$var4 is the second data series to compare
 
-        // $q1 = "";
-        // $q2 = "";
-        // $q1 = "SELECT agep              FROM Person";
-        // $q2 = "SELECT wagp             FROM Income";
-
-        // $stid1 = oci_parse($conn, $q1);  
-        // oci_define_by_name($stid1, 'AGEP', $name1);
-        // oci_execute($stid1);
-
-        // $array1 = array();
-        // while(oci_fetch($stid1)) {
-        //     $array1[] = $name1;
-        // }
-
-        // $stid2 = oci_parse($conn, $q2);  
-        // oci_define_by_name($stid2, 'WAGP', $name2);
-        // oci_execute($stid2);
-
-        // $array2 = array();
-        // while(oci_fetch($stid2)) {
-        //     $array2[] = $name2;
-        // }
         $array1 = array();
         $array2 = array();
+        
+        $q1 = "SELECT agep FROM Person";
+        $q2 = "SELECT wagp FROM Income";
 
-        $num = 20;
-        for($i = 0; $i < $num; $i++) {
-            $array1[] = rand();
-            $array2[] = rand();
+        $stid1 = oci_parse($conn, $q1);  
+        oci_define_by_name($stid1, 'AGEP', $name1);
+        oci_execute($stid1);
+
+        while(oci_fetch($stid1)) {
+            $array1[] = $name1;
         }
 
+        $stid2 = oci_parse($conn, $q2);  
+        oci_define_by_name($stid2, 'WAGP', $name2);
+        oci_execute($stid2);
+
+        while(oci_fetch($stid2)) {
+            $array2[] = $name2;
+        }
+    
         $data = Correlation($array1, $array2);
         echo $data;
+
+        oci_free_statement($stid1);
+        oci_free_statement($stid2);
     }
-
-    // Close the Oracle connection
-    oci_free_statement($stid);
-    oci_close($conn);
-
 
     //CORRELATION FUNCTIONS
     function Correlation($arr1, $arr2) {        
@@ -433,5 +424,9 @@
     function Sum($arr) {
         return array_sum($arr);
     }
+
+    // Close the Oracle connection
+    oci_free_statement($stid);
+    oci_close($conn);
 
 ?>
