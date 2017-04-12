@@ -166,7 +166,7 @@
                         AND communities.communityid=household.puma
                         AND Household.year=person.year
                         AND communities.year=person.year
-                        AND communities.name= 'Alachua County (Central)--Gainesville City (Central)'
+                        AND communities.name= '" . $var3 . "'
                         AND communities.year=" . $var4 . "
                         )--OR communities.year=2013)
                         ,
@@ -178,7 +178,7 @@
                         AND communities.communityid=household.puma
                         AND Household.year=person.year
                         AND communities.year=person.year
-                        AND communities.name= 'Alachua County (Central)--Gainesville City (Central)'
+                        AND communities.name= '" . $var3 . "'
                         AND communities.year=" . $varYear . ")
 
                         select n1 from ((select n1, n2, i2-i1 from (select iname n1, count(industryid)i1 from T group by industryid, iname)
