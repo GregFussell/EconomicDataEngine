@@ -104,7 +104,7 @@ function adddata(ds1, year, areatype, area, temp) {
         }
         colcount += 1;            
     }); 
-    $('.loader').hide();
+    $('#loader').hide();
 }
 
 //Add data when the button is clicked
@@ -140,6 +140,7 @@ $(document).on('click', '.add', function() {
                 temp = data; 
                 clearTimeout(load);
                 adddata(ds1, year, areatype, area, temp);
+                $('.loader').hide();
             }, 
             "text"
         );

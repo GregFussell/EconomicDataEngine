@@ -127,26 +127,67 @@
             oci_define_by_name($stid, 'AVG(ISUM)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Industry') {
+        else if($var1 == 'Fastest Growing Industry') {
             //ADD DIFFERENT QUERY
             $q = "";
+            $varYear = $var4 + 1;
             if($var3 == 'Florida') {
+                $q = "with T as
+                        (select * from communities, household, person, industry
+                        where person.serialno=household.serialno
+                        AND person.naicsp=industry.industryid
+                        AND communities.communityid=household.puma
+                        AND Household.year=person.year
+                        AND communities.year=person.year
+                        --AND communities.name= 'Alachua County (Central)--Gainesville City (Central)'
+                        AND communities.year=" . $var4 . "
+                        )--OR communities.year=2013)
+                        ,
 
+                        X as
+                        (select * from communities, household, person, industry
+                        where person.serialno=household.serialno
+                        AND person.naicsp=industry.industryid
+                        AND communities.communityid=household.puma
+                        AND Household.year=person.year
+                        AND communities.year=person.year
+                        --AND communities.name= 'Alachua County (Central)--Gainesville City (Central)'
+                        AND communities.year=" . $varYear . ")
+
+                        select n1 from ((select n1, n2, i2-i1 from (select iname n1, count(industryid)i1 from T group by industryid, iname)
+                        , (select iname n2, count(industryid)i2 from X group by industryid, iname) where n1=n2) order by i2-i1 desc) 
+                        where rownum = 1";
             }
             else {
-                $q = "select i1.name, INDUSTRY.name, i2.y - i1.x
-                        from (select communities.name, industry.industryid, COUNT(industryid) x from industry join person on (industry.industryID = person.NAICSP) join
-                        household on (person.serialNo = household.serialNo and person.year = household.year) join communities on (household.PUMA =
-                        communities.communityID and household.year = communities.year) where communities.name = 'Lake County (North)' and person.year = 2012 group by communities.name, industry.INDUSTRYID)  i1,
-                        (select communities.name, industry.industryid,COUNT(industryID) y from (industry join person on (industry.industryID = person.NAICSP ) join
-                        household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on (household.PUMA =
-                        communities.communityID and household.year = communities.year) where communities.name = 'Lake County (North)' and person.year = 2013 group by communities.name, industry.INDUSTRYID)  i2,
-                        industry
-                        where i1.industryID = i2.industryID and industry.industryid = i1.industryid;";
+                $q = "with T as
+                        (select * from communities, household, person, industry
+                        where person.serialno=household.serialno
+                        AND person.naicsp=industry.industryid
+                        AND communities.communityid=household.puma
+                        AND Household.year=person.year
+                        AND communities.year=person.year
+                        AND communities.name= 'Alachua County (Central)--Gainesville City (Central)'
+                        AND communities.year=" . $var4 . "
+                        )--OR communities.year=2013)
+                        ,
+
+                        X as
+                        (select * from communities, household, person, industry
+                        where person.serialno=household.serialno
+                        AND person.naicsp=industry.industryid
+                        AND communities.communityid=household.puma
+                        AND Household.year=person.year
+                        AND communities.year=person.year
+                        AND communities.name= 'Alachua County (Central)--Gainesville City (Central)'
+                        AND communities.year=" . $varYear . ")
+
+                        select n1 from ((select n1, n2, i2-i1 from (select iname n1, count(industryid)i1 from T group by industryid, iname)
+                        , (select iname n2, count(industryid)i2 from X group by industryid, iname) where n1=n2) order by i2-i1 desc) 
+                        where rownum = 1";
             }
             
             $stid = oci_parse($conn, $q);  
-            oci_define_by_name($stid, 'NAME', $name);
+            oci_define_by_name($stid, 'N1', $name);
             oci_execute($stid);
         }
         else if($var1 == 'Percentage of Migrants') {
