@@ -201,6 +201,8 @@ from (select communities.name, industry.industryid, COUNT(industryid) x from ind
    industry
   where i1.industryID = i2.industryID and industry.industryid = i1.industryid;
 
+
+--this is indsutry growth
 --updated industry for state
 
 with T as
