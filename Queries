@@ -201,7 +201,39 @@ from (select communities.name, industry.industryid, COUNT(industryid) x from ind
    industry
   where i1.industryID = i2.industryID and industry.industryid = i1.industryid;
 
+
 --this is indsutry growth
+--updated industry for state
+
+with T as
+(select * from communities, household, person, industry
+where person.serialno=household.serialno
+AND person.naicsp=industry.industryid
+AND communities.communityid=household.puma
+AND Household.year=person.year
+AND communities.year=person.year
+--AND communities.name= 'Alachua County (Central)--Gainesville City (Central)'
+AND communities.year=2012
+)--OR communities.year=2013)
+,
+
+X as
+(select * from communities, household, person, industry
+where person.serialno=household.serialno
+AND person.naicsp=industry.industryid
+AND communities.communityid=household.puma
+AND Household.year=person.year
+AND communities.year=person.year
+--AND communities.name= 'Alachua County (Central)--Gainesville City (Central)'
+AND communities.year=2013)
+
+select n1 from ((select n1, n2, i2-i1 from (select iname n1, count(industryid)i1 from T group by industryid, iname)
+, (select iname n2, count(industryid)i2 from X group by industryid, iname) where n1=n2) order by i2-i1 desc) 
+where rownum = 1;
+
+
+
+--updated industry for community
 with T as
 (select * from communities, household, person, industry
 where person.serialno=household.serialno
