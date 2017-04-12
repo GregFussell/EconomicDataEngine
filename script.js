@@ -118,8 +118,12 @@ $(document).on('click', '.add', function() {
     if(ds1.search('Data Series') != -1 || 
         year.search('Year') != -1 ||
         areatype.search('States') != -1 || 
-        area.search('Area') != -1) {
+        area.search('Area') == -1) {
             alert('Cannot add series - fill in all menus');
+    }
+    else if(ds1.search('Fastest Growing Industry') != -1 &&
+        year.search('2015') != -1) {
+        alert('Cannot check for fastest growing industry for this year. Select different year.');
     }
     else {
         //Get query results for data series 1
