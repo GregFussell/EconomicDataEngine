@@ -25,7 +25,7 @@
         $q = "SELECT distinct communities.name 
                 FROM Communities, States 
                 WHERE communities.belongsTo = states.stateid 
-                    AND states.name = '" . $var1 . "'";
+                    AND states.name = '" . $var1 . "' ORDER BY communities.name";
         $stid = oci_parse($conn, $q); //. $var1);
         oci_define_by_name($stid, 'NAME', $name);
         oci_execute($stid);
