@@ -134,8 +134,15 @@
 
             }
             else {
-                $q = "SELECT distinct name 
-                    FROM '" . $var2;
+                $q = "select i1.name, INDUSTRY.name, i2.y - i1.x
+                        from (select communities.name, industry.industryid, COUNT(industryid) x from industry join person on (industry.industryID = person.NAICSP) join
+                        household on (person.serialNo = household.serialNo and person.year = household.year) join communities on (household.PUMA =
+                        communities.communityID and household.year = communities.year) where communities.name = 'Lake County (North)' and person.year = 2012 group by communities.name, industry.INDUSTRYID)  i1,
+                        (select communities.name, industry.industryid,COUNT(industryID) y from (industry join person on (industry.industryID = person.NAICSP ) join
+                        household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on (household.PUMA =
+                        communities.communityID and household.year = communities.year) where communities.name = 'Lake County (North)' and person.year = 2013 group by communities.name, industry.INDUSTRYID)  i2,
+                        industry
+                        where i1.industryID = i2.industryID and industry.industryid = i1.industryid;";
             }
             
             $stid = oci_parse($conn, $q);  
@@ -202,7 +209,11 @@
         else if($var1 == 'Property Value') {
             $q = "";
             if($var3 == 'Florida') {
-
+                $q = "select Avg(coalesce(household.VALP, 0))
+                        from household join communities on (PUMA = communityID and communities.year = household.year) join states on 
+                        (communities.BELONGSTO = states.stateID and communities.year = states.year)
+                        where states.name = 'Florida' and household.year = " . $var4 . " and household.NP != 0
+                        group by states.name";
             }
             else {
                 $q = "select Avg(coalesce(household.VALP, 0))
@@ -212,6 +223,38 @@
             
             $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'AVG(COALESCE(HOUSEHOLD.VALP,0))', $name);
+            oci_execute($stid);
+        }
+        else if($var1 == 'Most Spoken Language') {
+            $q = "";
+            if($var3 == 'Florida') {
+                $q = "select primarylanguage.name
+                        from primarylanguage join person on languageID = person.lanp join household on 
+                        (person.serialNo = household.serialNo and person.year = household.year) join communities on 
+                        (household.PUMA = communities.communityID and household.year = communities.year) join states on
+                        (communities.belongsTo = states.stateID and communities.year = states.year)
+                        where states.name = 'Florida' and states.year = " . $var4 . " group by states.name, primarylanguage.name
+                        having Count(*) = (select Max(Count(*)) from primarylanguage join person on languageID = person.lanp 
+                        join household on (person.serialNo = household.serialNo and person.year = household.year) join 
+                        communities on (household.PUMA = communities.communityID and household.year = communities.year)
+                        join states on (communities.belongsTo = states.stateID and communities.year = states.year)
+                        where states.name = 'Florida' and states.year = " . $var4 . " group by languageID)";
+            }
+            else {
+                $q = "select primarylanguage.name
+                        from primarylanguage join person on languageID = person.lanp join household on 
+                        (person.serialNo = household.serialNo and person.year = household.year) join communities on 
+                        (household.PUMA = communities.communityID and household.year = communities.year)
+                        where communities.name = '" . $var3 . "' and communities.year = " . $var4 . " group by communities.name, primarylanguage.name
+                        having Count(*) = (select Max(Count(*)) from (primarylanguage join person on languageID = 
+                        person.lanp) join household on (person.serialNo = household.serialNo and person.year = household.year) 
+                        join communities on (household.PUMA = communities.communityID and household.year = 
+                        communities.year) where communities.name = '" . $var3 . "' and 
+                        communities.year = " . $var4 . " group by languageID)";
+            }
+
+            $stid = oci_parse($conn, $q);
+            oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
         
