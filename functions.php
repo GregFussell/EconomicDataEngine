@@ -21,28 +21,7 @@
     $q1 = "";
     $q2 = "";
 
-    //Fill in 'Area' dropdown based on Area Type
-    if($check == 'areatype') {
-        //$var1 is the name of the state we are using
-        $q = "SELECT distinct communities.name 
-                FROM Communities, States 
-                WHERE communities.belongsTo = states.stateid 
-                    AND states.name = '" . $var1 . "' ORDER BY communities.name";
-        $stid = oci_parse($conn, $q); //. $var1);
-        oci_define_by_name($stid, 'NAME', $name);
-        oci_execute($stid);
-
-        $data = '<li role="presentation"><a role="menuitem" tabindex="-1" href="#"><b>' . $var1 . '</b></a></li>';
-        while(oci_fetch($stid)) {
-            $data = $data . '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $name . '</a></li>';
-        }
-        echo $data; 
-    } //Add Data when "Add Series" is selected
-    else if($check == 'add') { 
-        //$var1 is the data series
-        //$var2 is area type (state or community)
-        //$var3 is the specific state or community 
-        //$var4 is the year we're looking at
+    function performQuery($var1, $var2, $var3, $var4, $conn) {
         if($var1 == 'Median Age') {
             $q = "";
             if($var3 == 'Florida') {
@@ -300,13 +279,40 @@
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
-        
         while(oci_fetch($stid)) {
             $data = $name;
         }
         if(is_null($data)) {
             $data = "null";
         }
+
+            return $data;
+    }
+
+    //Fill in 'Area' dropdown based on Area Type
+    if($check == 'areatype') {
+        //$var1 is the name of the state we are using
+        $q = "SELECT distinct communities.name 
+                FROM Communities, States 
+                WHERE communities.belongsTo = states.stateid 
+                    AND states.name = '" . $var1f . "' ORDER BY communities.name";
+        $stid = oci_parse($conn, $q); //. $var1);
+        oci_define_by_name($stid, 'NAME', $name);
+        oci_execute($stid);
+
+        $data = '<li role="presentation"><a role="menuitem" tabindex="-1" href="#"><b>' . $var1f . '</b></a></li>';
+        while(oci_fetch($stid)) {
+            $data = $data . '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $name . '</a></li>';
+        }
+        echo $data; 
+    } //Add Data when "Add Series" is selected
+    else if($check == 'add') { 
+        //$var1 is the data series
+        //$var2 is area type (state or community)
+        //$var3 is the specific state or community 
+        //$var4 is the year we're looking at
+        
+        $data = performQuery($var1, $var2, $var3, $var4, $conn);
         echo $data;
     }
     else if($check == 'compare') {
@@ -318,12 +324,14 @@
         $array1 = array();
         $array2 = array();
         
-        $q1 = "SELECT agep FROM Person
-                WHERE ROWNUM <=1
-                ORDER BY agep ASC";
-        $q2 = "SELECT wagp FROM Income
-                WHERE ROWNUM <=1
-                ORDER BY wagp ASC";
+        //$q1 = "SELECT agep FROM Person
+        //        WHERE ROWNUM <=1
+        //        ORDER BY agep ASC";
+        //$q2 = "SELECT wagp FROM Income
+        //        WHERE ROWNUM <=1
+        //        ORDER BY wagp ASC";
+
+        
 
         $stid1 = oci_parse($conn, $q1);  
         oci_define_by_name($stid1, 'AGEP', $name1);
@@ -340,9 +348,10 @@
         while(oci_fetch($stid2)) {
             $array2[] = $name2;
         }
-    
+
         $data = Correlation($array1, $array2);
         echo $data;
+        //echo $array2[0];
 
         oci_free_statement($stid1);
         oci_free_statement($stid2);
