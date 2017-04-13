@@ -131,7 +131,7 @@ $(document).on('click', '.add', function() {
         $('.loader').show();
         var load = setTimeout(function() {
             temp = "Try Again";
-        }, 20000);
+        }, 60000);
 
         $.get("functions.php", 
             { 'check': 'add',
@@ -233,14 +233,14 @@ $(document).on('click', '.compare', function() {
         $('.loader').show();
         var load = setTimeout(function() {
             temp = "Try Again";
-        }, 20000);
+        }, 60000);
 
         $.get("functions.php", 
             { 'check': 'compare',
                 'var1': area1,
                 'var2': area2,
-                'var3': first,
-                'var4': second
+                'var3': ds1,
+                'var4': ds2
             },
             function(data) { 
                 temp = data;
