@@ -1,6 +1,6 @@
 <?php
 $array1 = array();
-$array1 = array();
+$array2 = array();
 
     $conn = oci_connect($username = 'cgfussel', $password = 'Economy321', $connection_string = '//oracle.cise.ufl.edu/orcl');
 
@@ -292,98 +292,98 @@ $array1 = array();
             return $data;
     }
 
-    function performQueryCompare1($var1, $var3, $var4, $conn, $i) {
-        if($var1 == 'Median Age') {
+    function performQueryCompare1($dataseries, $areaname, $year, $conn, $i) {
+        if($dataseries == 'Median Age') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select states.name, Median(person.Agep)
                         from person join household on (person.serialNo = household.serialNo and  person.year = household.year)
                         join communities on (PUMA = communityID and communities.year = household.year) join states on 
                         (communities.BELONGSTO = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and person.year = " . $var4 . " group by states.name";
+                        where states.name = 'Florida' and person.year = " . $year . " group by states.name";
             }
             else {
                  $q = "select Median(person.Agep)
                     from person join household on (person.serialNo = household.serialNo and  person.year = household.year)
                     join communities on (PUMA = communityID and communities.year = household.year)
-                    where communities.name = '" . $var3 . "' and person.year = " . $var4 . " group by communities.name";
+                    where communities.name = '" . $areaname . "' and person.year = " . $year . " group by communities.name";
             }
            
             $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'MEDIAN(PERSON.AGEP)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Fertility Rate') {
+        else if($dataseries == 'Fertility Rate') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select sum(household.NOC)/(Count(*) / 2)
                         from person join household on (person.serialNo = household.serialNo and person.year = household.year)
                         join communities on (PUMA = communityID and communities.year = household.year)
                         join states on (communities.BELONGSTO = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and household.year = " . $var4 . " group by states.name";
+                        where states.name = 'Florida' and household.year = " . $year . " group by states.name";
             }
             else {
                  $q = "select sum(household.NOC)/(Count(*) / 2)
                     from person join household on (person.serialNo = household.serialNo and person.year = household.year)
                     join communities on (PUMA = communityID and communities.year = household.year)
-                    where communities.name = '" . $var3 . "' and household.year = '" . $var4 . "' group by communities.name";
+                    where communities.name = '" . $areaname . "' and household.year = '" . $year . "' group by communities.name";
             }
             $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'SUM(HOUSEHOLD.NOC)/(COUNT(*)/2)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Median Income') {
+        else if($dataseries == 'Median Income') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select Median(isum)
                         from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
                         join communities on (household.PUMA = communities.communityID and household.year = communities.year)
                         join states on (communities.belongsTo = states.stateID and communities.year = states.year)
-                        where income.year = " . $var4 . " and states.name = 'Florida'
+                        where income.year = " . $year . " and states.name = 'Florida'
                         group by states.name, household.serialNo), states
-                        where states.name = 'Florida' and states.year = " . $var4 . " group by states.name";
+                        where states.name = 'Florida' and states.year = " . $year . " group by states.name";
             }
             else {
                 $q = "SELECT Median(isum)
                     from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
                     join communities on (household.PUMA = communities.communityID and household.year = communities.year)
-                    where income.year = " . $var4 . " and communities.name = '" . $var3 . "' group by communities.name, household.serialNo), communities
-                    where communities.name = '" . $var3 . "' and communities.year = " . $var4 . " group by communities.name";
+                    where income.year = " . $year . " and communities.name = '" . $areaname . "' group by communities.name, household.serialNo), communities
+                    where communities.name = '" . $areaname . "' and communities.year = " . $year . " group by communities.name";
             }
 
             $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'MEDIAN(ISUM)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Average Income') {
+        else if($dataseries == 'Average Income') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select states.name, Avg(isum)
                         from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
                         join communities on (household.PUMA = communities.communityID and household.year = communities.year)
                         join states on (communities.belongsTo = states.stateID and communities.year = states.year)
-                        where income.year = " . $var4 . " and states.name = 'Florida'
+                        where income.year = " . $year . " and states.name = 'Florida'
                         group by states.name, household.serialNo), states
-                        where states.name = 'Florida' and states.year = " . $var4 . " group by states.name";
+                        where states.name = 'Florida' and states.year = " . $year . " group by states.name";
             }
             else {
                 $q = "select Avg(isum)
                     from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
                     join communities on (household.PUMA = communities.communityID and household.year = communities.year)
-                    where income.year = " . $var4 . " and communities.name = '" . $var3 . "' 
+                    where income.year = " . $year . " and communities.name = '" . $areaname . "' 
                     group by communities.name, household.serialNo), communities
-                    where communities.name = '" . $var3 ."' and communities.year = " . $var4 . " group by communities.name";
+                    where communities.name = '" . $areaname ."' and communities.year = " . $year . " group by communities.name";
             }
         
             $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'AVG(ISUM)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Fastest Growing Industry') {
+        else if($dataseries == 'Fastest Growing Industry') {
             //ADD DIFFERENT QUERY
             $q = "";
-            $varYear = $var4 + 1;
-            if($var3 == 'Florida') {
+            $varYear = $year + 1;
+            if($areaname == 'Florida') {
                 $q = "with T as
                         (select * from communities, household, person, industry
                         where person.serialno=household.serialno
@@ -392,7 +392,7 @@ $array1 = array();
                         AND Household.year=person.year
                         AND communities.year=person.year
                         --AND communities.name= 'Alachua County (Central)--Gainesville City (Central)'
-                        AND communities.year=" . $var4 . "
+                        AND communities.year=" . $year . "
                         )--OR communities.year=2013)
                         ,
 
@@ -418,8 +418,8 @@ $array1 = array();
                         AND communities.communityid=household.puma
                         AND Household.year=person.year
                         AND communities.year=person.year
-                        AND communities.name= '" . $var3 . "'
-                        AND communities.year=" . $var4 . "
+                        AND communities.name= '" . $areaname . "'
+                        AND communities.year=" . $year . "
                         )--OR communities.year=2013)
                         ,
 
@@ -430,7 +430,7 @@ $array1 = array();
                         AND communities.communityid=household.puma
                         AND Household.year=person.year
                         AND communities.year=person.year
-                        AND communities.name= '" . $var3 . "'
+                        AND communities.name= '" . $areaname . "'
                         AND communities.year=" . $varYear . ")
 
                         select n1 from ((select n1, n2, i2-i1 from (select iname n1, count(industryid)i1 from T group by industryid, iname)
@@ -442,22 +442,22 @@ $array1 = array();
             oci_define_by_name($stid, 'N1', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Percentage of Migrants') {
+        else if($dataseries == 'Percentage of Migrants') {
             // actually number of migrants
             $q = "";
-            if($var3 == 'Florida') {
+            if($dataseries == 'Florida') {
                 $q = "select Count(mig)
                         from ((person join household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on 
                         (household.PUMA = communities.communityID and household.year= communities.year)) join states on (communities.belongsTo = 
                         states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and person.year = " . $var4 . " and mig = 2
+                        where states.name = 'Florida' and person.year = " . $year . " and mig = 2
                         group by states.name";
             }
             else {
                 $q = "select Count(mig)
                     from (person join household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on 
                     (household.PUMA = communities.communityID and household.year= communities.year)
-                    where communities.name = '" . $var3 . "' and person.year = " . $var4 . " and mig = 2
+                    where communities.name = '" . $areaname . "' and person.year = " . $year . " and mig = 2
                     group by communities.name";
             }
             
@@ -465,85 +465,84 @@ $array1 = array();
             oci_define_by_name($stid, 'COUNT(MIG)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Poverty Rate') {
+        else if($dataseries == 'Poverty Rate') {
             // Poverty query not working
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
 
             }
             else {
-                $q = "SELECT distinct name 
-                    FROM '" . $var2;
+                
             }
             $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Number of Languages') {
+        else if($dataseries == 'Number of Languages') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select states.name, Count(distinct person.LANP)
                         from person join HOUSEHOLD on (person.serialNo = household.serialNo and person.year = household.year)
                         join communities on (household.PUMA = communities.communityID and household.year = communities.year)
                         join states on (communities.belongsTo = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and person.year = " . $var4 . " group by states.name";
+                        where states.name = 'Florida' and person.year = " . $year . " group by states.name";
             }
             else {
                 $q = "select Count(distinct person.LANP)
                     from person join HOUSEHOLD on (person.serialNo = household.serialNo and person.year = household.year)
                     join communities on (household.PUMA = communities.communityID and household.year = communities.year)
-                    where communities.name = '" . $var3 . "' and person.year = " . $var4 . " group by communities.name";
+                    where communities.name = '" . $areaname . "' and person.year = " . $year . " group by communities.name";
             }
             
             $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'COUNT(DISTINCTPERSON.LANP)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Property Value') {
+        else if($dataseries == 'Property Value') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select Avg(coalesce(household.VALP, 0))
                         from household join communities on (PUMA = communityID and communities.year = household.year) join states on 
                         (communities.BELONGSTO = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and household.year = " . $var4 . " and household.NP != 0
+                        where states.name = 'Florida' and household.year = " . $year . " and household.NP != 0
                         group by states.name";
             }
             else {
                 $q = "select Avg(coalesce(household.VALP, 0))
                     from household join communities on (PUMA = communityID and communities.year = household.year) 
-                    where communities.name = '" . $var3 . "' and household.year = " . $var4 . " and household.NP != 0 group by communities.name";
+                    where communities.name = '" . $areaname . "' and household.year = " . $year . " and household.NP != 0 group by communities.name";
             }
             
             $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'AVG(COALESCE(HOUSEHOLD.VALP,0))', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Most Spoken Foreign Language') {
+        else if($dataseries == 'Most Spoken Foreign Language') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select primarylanguage.name
                         from primarylanguage join person on languageID = person.lanp join household on 
                         (person.serialNo = household.serialNo and person.year = household.year) join communities on 
                         (household.PUMA = communities.communityID and household.year = communities.year) join states on
                         (communities.belongsTo = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and states.year = " . $var4 . " group by states.name, primarylanguage.name
+                        where states.name = 'Florida' and states.year = " . $year . " group by states.name, primarylanguage.name
                         having Count(*) = (select Max(Count(*)) from primarylanguage join person on languageID = person.lanp 
                         join household on (person.serialNo = household.serialNo and person.year = household.year) join 
                         communities on (household.PUMA = communities.communityID and household.year = communities.year)
                         join states on (communities.belongsTo = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and states.year = " . $var4 . " group by languageID)";
+                        where states.name = 'Florida' and states.year = " . $year . " group by languageID)";
             }
             else {
                 $q = "select primarylanguage.name
                         from primarylanguage join person on languageID = person.lanp join household on 
                         (person.serialNo = household.serialNo and person.year = household.year) join communities on 
                         (household.PUMA = communities.communityID and household.year = communities.year)
-                        where communities.name = '" . $var3 . "' and communities.year = " . $var4 . " group by communities.name, primarylanguage.name
+                        where communities.name = '" . $areaname . "' and communities.year = " . $year . " group by communities.name, primarylanguage.name
                         having Count(*) = (select Max(Count(*)) from (primarylanguage join person on languageID = 
                         person.lanp) join household on (person.serialNo = household.serialNo and person.year = household.year) 
                         join communities on (household.PUMA = communities.communityID and household.year = 
-                        communities.year) where communities.name = '" . $var3 . "' and 
-                        communities.year = " . $var4 . " group by languageID)";
+                        communities.year) where communities.name = '" . $areaname . "' and 
+                        communities.year = " . $year . " group by languageID)";
             }
 
             $stid = oci_parse($conn, $q);
@@ -552,108 +551,110 @@ $array1 = array();
         }
         while(oci_fetch($stid)) {
             $data = $name;
+            $GLOBALS['array1'][$i] = $data;
         }
-
-        $GLOBALS['array1'][$i] = $data;
-        echo $GLOBALS['array1'][$i];
+        
+        if(is_null($data)) {
+            $GLOBALS['array1'][0] == 88;
+        }
+        //$GLOBALS['array1'][0] == 88;
         oci_free_statement($stid);
-        //$GLOBALS['array1'][0] = 88;
 
             return $data;
     }
 
-    function performQueryCompare2($var1, $var3, $var4, $conn, $i) {
-        if($var1 == 'Median Age') {
+    function performQueryCompare2($dataseries, $areaname, $year, $conn, $i) {
+        if($dataseries == 'Median Age') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select states.name, Median(person.Agep)
                         from person join household on (person.serialNo = household.serialNo and  person.year = household.year)
                         join communities on (PUMA = communityID and communities.year = household.year) join states on 
                         (communities.BELONGSTO = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and person.year = " . $var4 . " group by states.name";
+                        where states.name = 'Florida' and person.year = " . $year . " group by states.name";
             }
             else {
                  $q = "select Median(person.Agep)
                     from person join household on (person.serialNo = household.serialNo and  person.year = household.year)
                     join communities on (PUMA = communityID and communities.year = household.year)
-                    where communities.name = '" . $var3 . "' and person.year = " . $var4 . " group by communities.name";
+                    where communities.name = '" . $areaname . "' and person.year = " . $year . " group by communities.name";
             }
            
             $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'MEDIAN(PERSON.AGEP)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Fertility Rate') {
+        else if($dataseries == 'Fertility Rate') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select sum(household.NOC)/(Count(*) / 2)
                         from person join household on (person.serialNo = household.serialNo and person.year = household.year)
                         join communities on (PUMA = communityID and communities.year = household.year)
                         join states on (communities.BELONGSTO = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and household.year = " . $var4 . " group by states.name";
+                        where states.name = 'Florida' and household.year = " . $year . " group by states.name";
             }
             else {
                  $q = "select sum(household.NOC)/(Count(*) / 2)
                     from person join household on (person.serialNo = household.serialNo and person.year = household.year)
                     join communities on (PUMA = communityID and communities.year = household.year)
-                    where communities.name = '" . $var3 . "' and household.year = '" . $var4 . "' group by communities.name";
+                    where communities.name = '" . $areaname . "' and household.year = '" . $year . "' group by communities.name";
             }
             $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'SUM(HOUSEHOLD.NOC)/(COUNT(*)/2)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Median Income') {
+        else if($dataseries == 'Median Income') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select Median(isum)
                         from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
                         join communities on (household.PUMA = communities.communityID and household.year = communities.year)
                         join states on (communities.belongsTo = states.stateID and communities.year = states.year)
-                        where income.year = " . $var4 . " and states.name = 'Florida'
+                        where income.year = " . $year . " and states.name = 'Florida'
                         group by states.name, household.serialNo), states
-                        where states.name = 'Florida' and states.year = " . $var4 . " group by states.name";
+                        where states.name = 'Florida' and states.year = " . $year . " group by states.name";
             }
             else {
                 $q = "SELECT Median(isum)
                     from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
                     join communities on (household.PUMA = communities.communityID and household.year = communities.year)
-                    where income.year = " . $var4 . " and communities.name = '" . $var3 . "' group by communities.name, household.serialNo), communities
-                    where communities.name = '" . $var3 . "' and communities.year = " . $var4 . " group by communities.name";
+                    where income.year = " . $year . " and communities.name = '" . $areaname . "' group by communities.name, household.serialNo), communities
+                    where communities.name = '" . $areaname . "' and communities.year = " . $year . " group by communities.name";
             }
 
             $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'MEDIAN(ISUM)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Average Income') {
+        else if($dataseries == 'Average Income') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select states.name, Avg(isum)
                         from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
                         join communities on (household.PUMA = communities.communityID and household.year = communities.year)
                         join states on (communities.belongsTo = states.stateID and communities.year = states.year)
-                        where income.year = " . $var4 . " and states.name = 'Florida'
+                        where income.year = " . $year . " and states.name = 'Florida'
                         group by states.name, household.serialNo), states
-                        where states.name = 'Florida' and states.year = " . $var4 . " group by states.name";
+                        where states.name = 'Florida' and states.year = " . $year . " group by states.name";
             }
             else {
                 $q = "select Avg(isum)
                     from (select sum (income.wagp) as isum from income join household on (income.serialNo = household.serialNo and income.year = household.year) 
                     join communities on (household.PUMA = communities.communityID and household.year = communities.year)
-                    where income.year = " . $var4 . " and communities.name = '" . $var3 . "' 
+                    where income.year = " . $year . " and communities.name = '" . $areaname . "' 
                     group by communities.name, household.serialNo), communities
-                    where communities.name = '" . $var3 ."' and communities.year = " . $var4 . " group by communities.name";
+                    where communities.name = '" . $areaname ."' and communities.year = " . $year . " group by communities.name";
             }
         
             $stid = oci_parse($conn, $q);
             oci_define_by_name($stid, 'AVG(ISUM)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Fastest Growing Industry') {
+        else if($dataseries == 'Fastest Growing Industry') {
             //ADD DIFFERENT QUERY
             $q = "";
-            $varYear = $var4 + 1;
-            if($var3 == 'Florida') {
+            $varYear = $year + 1;
+            if($areaname == 'Florida') {
                 $q = "with T as
                         (select * from communities, household, person, industry
                         where person.serialno=household.serialno
@@ -662,7 +663,7 @@ $array1 = array();
                         AND Household.year=person.year
                         AND communities.year=person.year
                         --AND communities.name= 'Alachua County (Central)--Gainesville City (Central)'
-                        AND communities.year=" . $var4 . "
+                        AND communities.year=" . $year . "
                         )--OR communities.year=2013)
                         ,
 
@@ -688,8 +689,8 @@ $array1 = array();
                         AND communities.communityid=household.puma
                         AND Household.year=person.year
                         AND communities.year=person.year
-                        AND communities.name= '" . $var3 . "'
-                        AND communities.year=" . $var4 . "
+                        AND communities.name= '" . $areaname . "'
+                        AND communities.year=" . $year . "
                         )--OR communities.year=2013)
                         ,
 
@@ -700,7 +701,7 @@ $array1 = array();
                         AND communities.communityid=household.puma
                         AND Household.year=person.year
                         AND communities.year=person.year
-                        AND communities.name= '" . $var3 . "'
+                        AND communities.name= '" . $areaname . "'
                         AND communities.year=" . $varYear . ")
 
                         select n1 from ((select n1, n2, i2-i1 from (select iname n1, count(industryid)i1 from T group by industryid, iname)
@@ -712,22 +713,22 @@ $array1 = array();
             oci_define_by_name($stid, 'N1', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Percentage of Migrants') {
+        else if($dataseries == 'Percentage of Migrants') {
             // actually number of migrants
             $q = "";
-            if($var3 == 'Florida') {
+            if($dataseries == 'Florida') {
                 $q = "select Count(mig)
                         from ((person join household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on 
                         (household.PUMA = communities.communityID and household.year= communities.year)) join states on (communities.belongsTo = 
                         states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and person.year = " . $var4 . " and mig = 2
+                        where states.name = 'Florida' and person.year = " . $year . " and mig = 2
                         group by states.name";
             }
             else {
                 $q = "select Count(mig)
                     from (person join household on (person.serialNo = household.serialNo and person.year = household.year)) join communities on 
                     (household.PUMA = communities.communityID and household.year= communities.year)
-                    where communities.name = '" . $var3 . "' and person.year = " . $var4 . " and mig = 2
+                    where communities.name = '" . $areaname . "' and person.year = " . $year . " and mig = 2
                     group by communities.name";
             }
             
@@ -735,85 +736,84 @@ $array1 = array();
             oci_define_by_name($stid, 'COUNT(MIG)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Poverty Rate') {
+        else if($dataseries == 'Poverty Rate') {
             // Poverty query not working
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
 
             }
             else {
-                $q = "SELECT distinct name 
-                    FROM '" . $var2;
+                
             }
             $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'NAME', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Number of Languages') {
+        else if($dataseries == 'Number of Languages') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select states.name, Count(distinct person.LANP)
                         from person join HOUSEHOLD on (person.serialNo = household.serialNo and person.year = household.year)
                         join communities on (household.PUMA = communities.communityID and household.year = communities.year)
                         join states on (communities.belongsTo = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and person.year = " . $var4 . " group by states.name";
+                        where states.name = 'Florida' and person.year = " . $year . " group by states.name";
             }
             else {
                 $q = "select Count(distinct person.LANP)
                     from person join HOUSEHOLD on (person.serialNo = household.serialNo and person.year = household.year)
                     join communities on (household.PUMA = communities.communityID and household.year = communities.year)
-                    where communities.name = '" . $var3 . "' and person.year = " . $var4 . " group by communities.name";
+                    where communities.name = '" . $areaname . "' and person.year = " . $year . " group by communities.name";
             }
             
             $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'COUNT(DISTINCTPERSON.LANP)', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Property Value') {
+        else if($dataseries == 'Property Value') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select Avg(coalesce(household.VALP, 0))
                         from household join communities on (PUMA = communityID and communities.year = household.year) join states on 
                         (communities.BELONGSTO = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and household.year = " . $var4 . " and household.NP != 0
+                        where states.name = 'Florida' and household.year = " . $year . " and household.NP != 0
                         group by states.name";
             }
             else {
                 $q = "select Avg(coalesce(household.VALP, 0))
                     from household join communities on (PUMA = communityID and communities.year = household.year) 
-                    where communities.name = '" . $var3 . "' and household.year = " . $var4 . " and household.NP != 0 group by communities.name";
+                    where communities.name = '" . $areaname . "' and household.year = " . $year . " and household.NP != 0 group by communities.name";
             }
             
             $stid = oci_parse($conn, $q);  
             oci_define_by_name($stid, 'AVG(COALESCE(HOUSEHOLD.VALP,0))', $name);
             oci_execute($stid);
         }
-        else if($var1 == 'Most Spoken Foreign Language') {
+        else if($dataseries == 'Most Spoken Foreign Language') {
             $q = "";
-            if($var3 == 'Florida') {
+            if($areaname == 'Florida') {
                 $q = "select primarylanguage.name
                         from primarylanguage join person on languageID = person.lanp join household on 
                         (person.serialNo = household.serialNo and person.year = household.year) join communities on 
                         (household.PUMA = communities.communityID and household.year = communities.year) join states on
                         (communities.belongsTo = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and states.year = " . $var4 . " group by states.name, primarylanguage.name
+                        where states.name = 'Florida' and states.year = " . $year . " group by states.name, primarylanguage.name
                         having Count(*) = (select Max(Count(*)) from primarylanguage join person on languageID = person.lanp 
                         join household on (person.serialNo = household.serialNo and person.year = household.year) join 
                         communities on (household.PUMA = communities.communityID and household.year = communities.year)
                         join states on (communities.belongsTo = states.stateID and communities.year = states.year)
-                        where states.name = 'Florida' and states.year = " . $var4 . " group by languageID)";
+                        where states.name = 'Florida' and states.year = " . $year . " group by languageID)";
             }
             else {
                 $q = "select primarylanguage.name
                         from primarylanguage join person on languageID = person.lanp join household on 
                         (person.serialNo = household.serialNo and person.year = household.year) join communities on 
                         (household.PUMA = communities.communityID and household.year = communities.year)
-                        where communities.name = '" . $var3 . "' and communities.year = " . $var4 . " group by communities.name, primarylanguage.name
+                        where communities.name = '" . $areaname . "' and communities.year = " . $year . " group by communities.name, primarylanguage.name
                         having Count(*) = (select Max(Count(*)) from (primarylanguage join person on languageID = 
                         person.lanp) join household on (person.serialNo = household.serialNo and person.year = household.year) 
                         join communities on (household.PUMA = communities.communityID and household.year = 
-                        communities.year) where communities.name = '" . $var3 . "' and 
-                        communities.year = " . $var4 . " group by languageID)";
+                        communities.year) where communities.name = '" . $areaname . "' and 
+                        communities.year = " . $year . " group by languageID)";
             }
 
             $stid = oci_parse($conn, $q);
@@ -822,8 +822,13 @@ $array1 = array();
         }
         while(oci_fetch($stid)) {
             $data = $name;
+            $GLOBALS['array2'][$i] = $data;
         }
-        $GLOBALS['array2'][$i] = $data;
+        
+        if(is_null($data)) {
+            $GLOBALS['array2'][0] == 88;
+        }
+        //$GLOBALS['array2'][0] == 88;
         oci_free_statement($stid);
 
             return $data;
@@ -863,12 +868,14 @@ $array1 = array();
         //$var4 is the second data series to compare
 
         for($i = 0; $i <= 3; $i++) {
-            performQueryCompare1($var3, $var1, 2012+$i, $conn, $i);
+            $data = performQueryCompare1($var3, $var1, 2012+$i, $conn, $i);
+            //$GLOBALS['array1'][$i] = $data;
             //$array1[$i] = $data;
         }
 
         for($i = 0; $i <= 3; $i++) {
-            performQueryCompare2($var3, $var1, 2012+$i, $conn, $i);
+            $data = performQueryCompare2($var4, $var2, 2012+$i, $conn, $i);
+            //$GLOBALS['array2'][$i] = $data;
             //$array2[$i] = $data;
         }
 
