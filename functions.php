@@ -295,12 +295,12 @@
         $q = "SELECT distinct communities.name 
                 FROM Communities, States 
                 WHERE communities.belongsTo = states.stateid 
-                    AND states.name = '" . $var1f . "' ORDER BY communities.name";
+                    AND states.name = '" . $var1 . "' ORDER BY communities.name";
         $stid = oci_parse($conn, $q); //. $var1);
         oci_define_by_name($stid, 'NAME', $name);
         oci_execute($stid);
 
-        $data = '<li role="presentation"><a role="menuitem" tabindex="-1" href="#"><b>' . $var1f . '</b></a></li>';
+        $data = '<li role="presentation"><a role="menuitem" tabindex="-1" href="#"><b>' . $var1 . '</b></a></li>';
         while(oci_fetch($stid)) {
             $data = $data . '<li role="presentation"><a role="menuitem" tabindex="-1" href="#">' . $name . '</a></li>';
         }
