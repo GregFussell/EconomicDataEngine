@@ -318,8 +318,12 @@
         $array1 = array();
         $array2 = array();
         
-        $q1 = "SELECT agep FROM Person";
-        $q2 = "SELECT wagp FROM Income";
+        $q1 = "SELECT agep FROM Person
+                WHERE ROWNUM <=1
+                ORDER BY agep ASC";
+        $q2 = "SELECT wagp FROM Income
+                WHERE ROWNUM <=1
+                ORDER BY wagp ASC";
 
         $stid1 = oci_parse($conn, $q1);  
         oci_define_by_name($stid1, 'AGEP', $name1);
